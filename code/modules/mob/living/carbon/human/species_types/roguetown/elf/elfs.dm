@@ -26,6 +26,7 @@
 
 	default_color = "FFFFFF"
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,OLDGREY)
+	inherent_traits = list(TRAIT_WOODWALKER)
 	default_features = MANDATORY_FEATURE_LIST
 	use_skintones = TRUE
 	disliked_food = NONE
