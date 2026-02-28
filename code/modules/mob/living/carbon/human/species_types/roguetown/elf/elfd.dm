@@ -53,7 +53,7 @@
 	use_skintones = TRUE
 	disliked_food = NONE
 	liked_food = NONE
-	inherent_traits = list(TRAIT_CAVEDWELLER, TRAIT_DARKVISION) //I mean, you lived in caves, so I suppose you should be able to see in dark
+	inherent_traits = list(TRAIT_CAVEDWELLER, TRAIT_KEENEARS)
 	possible_ages = ALL_AGES_LIST
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP | SLIME_EXTRACT
 	limbs_icon_m = 'icons/roguetown/mob/bodies/m/mem.dmi'
