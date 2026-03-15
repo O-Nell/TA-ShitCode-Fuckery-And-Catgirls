@@ -53,7 +53,7 @@
 	use_skintones = TRUE
 	disliked_food = NONE
 	liked_food = NONE
-	inherent_traits = list(TRAIT_CAVEDWELLER, TRAIT_KEENEARS)
+	inherent_traits = list(TRAIT_CAVEDWELLER)
 	possible_ages = ALL_AGES_LIST
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP | SLIME_EXTRACT
 	limbs_icon_m = 'icons/roguetown/mob/bodies/m/mem.dmi'
@@ -76,6 +76,10 @@
 		OFFSET_SHIRT_F = list(0,0), OFFSET_ARMOR_F = list(0,0), OFFSET_UNDIES_F = list(0,-1), \
 		)
 	race_bonus = list(STAT_PERCEPTION = 1, STAT_INTELLIGENCE = 1)
+	custom_selection = list(
+        "The way of spiders" = TRAIT_WEBWALKER,
+		"The way of knowledge" = TRAIT_KEENEARS
+	)
 	enflamed_icon = "widefire"
 	organs = list(
 		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
