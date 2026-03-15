@@ -28,7 +28,7 @@
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,OLDGREY)
 	inherent_traits = list(TRAIT_KEENEARS)
 	custom_selection = list(
-        "The way of traditions" = TRAIT_XENOPHOBIC,
+        "The way of traditions" = TRAIT_BLACKOAK,
 		"The way of love" = TRAIT_TOLERANT
 	)
 	default_features = MANDATORY_FEATURE_LIST
