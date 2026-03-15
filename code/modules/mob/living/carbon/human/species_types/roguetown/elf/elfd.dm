@@ -77,7 +77,7 @@
 		)
 	race_bonus = list(STAT_PERCEPTION = 1, STAT_INTELLIGENCE = 1)
 	custom_selection = list(
-        "The way of spiders" = TRAIT_WEBWALKER,
+        "The way of spiders" = TRAIT_WEBWALK,
 		"The way of knowledge" = TRAIT_KEENEARS
 	)
 	enflamed_icon = "widefire"
