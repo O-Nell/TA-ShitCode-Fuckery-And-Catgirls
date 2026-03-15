@@ -23,7 +23,7 @@
 	skin_tone_wording = "Clan"
 
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,STUBBLE,OLDGREY)
-	inherent_traits = list(TRAIT_NOMOBSWAP, TRAIT_BIGGUY) //add em erp-related trait later
+	inherent_traits = list(TRAIT_NOMOBSWAP, TRAIT_HUMEN_INGENUITY, TRAIT_BIGGUY) //we're not as dumb as our father
 	default_features = MANDATORY_FEATURE_LIST
 	use_skintones = TRUE
 	disliked_food = NONE
