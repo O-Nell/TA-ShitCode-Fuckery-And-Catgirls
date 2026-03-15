@@ -42,14 +42,14 @@
 		M.blood_volume = min(M.blood_volume+20, BLOOD_VOLUME_NORMAL)
 	var/list/wCount = M.get_wounds()
 	if(wCount.len > 0)
-		M.heal_wounds(6) //at a motabalism of .5 U a tick this translates to 240WHP healing with 20 U Most wounds are unsewn 15-100.
+		M.heal_wounds(5) // i've decided that middle would be the best choice here
 	if(volume > 0.99)
-		M.adjustBruteLoss(-7  * REAGENTS_EFFECT_MULTIPLIER, 0)
-		M.adjustFireLoss(-7  * REAGENTS_EFFECT_MULTIPLIER, 0)
+		M.adjustBruteLoss(-6  * REAGENTS_EFFECT_MULTIPLIER, 0)
+		M.adjustFireLoss(-6  * REAGENTS_EFFECT_MULTIPLIER, 0)
 		M.adjustOxyLoss(-5, 0)
 		M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -5  * REAGENTS_EFFECT_MULTIPLIER)
-		M.adjustCloneLoss(-7  * REAGENTS_EFFECT_MULTIPLIER, 0)
-		M.adjustOrganLoss(ORGAN_SLOT_EYES, -2.5 * REAGENTS_EFFECT_MULTIPLIER)
+		M.adjustCloneLoss(-6  * REAGENTS_EFFECT_MULTIPLIER, 0)
+		M.adjustOrganLoss(ORGAN_SLOT_EYES, -2.5 * REAGENTS_EFFECT_MULTIPLIER) // same here.
 	..()
 	. = 1
 

@@ -162,7 +162,8 @@
 				H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/minion_order)
 				H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/gravemark)
 				H.mind?.current.faction += "[H.name]_faction"
-
+			if(H.patron?.type == /datum/patron/divine/abyssor)
+				H.grant_language(/datum/language/abyssal)
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson
 	armor = /obj/item/clothing/suit/roguetown/armor/leather
 	pants = /obj/item/clothing/under/roguetown/trou/leather
@@ -204,7 +205,7 @@
 		if("Slurbow + Dagger")
 			l_hand = /obj/item/rogueweapon/huntingknife/idagger/steel/special
 			r_hand = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow/slurbow
-			beltl = /obj/item/quiver/bolts
+			beltl = /obj/item/quiver/bolt/light
 			H.change_stat(STATKEY_PER, 3)
 			H.change_stat(STATKEY_SPD, 1)
 			H.adjust_skillrank_up_to(/datum/skill/combat/crossbows, 3, TRUE)

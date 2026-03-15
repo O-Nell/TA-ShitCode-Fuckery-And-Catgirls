@@ -247,22 +247,10 @@
 	adjacency = FALSE
 	bypasses_click_cd = TRUE
 
-/datum/rmb_intent/riposte/special_attack(mob/living/user, atom/target)	//Wish we could breakline these somehow.
-	if(!user.has_status_effect(/datum/status_effect/buff/clash) && !user.has_status_effect(/datum/status_effect/debuff/clashcd) && !user.has_status_effect(/datum/status_effect/buff/clash/limbguard))
-		if(!user.get_active_held_item()) //Nothing in our hand to Guard with.
-			return 
-		if(user.r_grab || user.l_grab || length(user.grabbedby)) //Not usable while grabs are in play.
-			return
-		if(user.IsImmobilized() || user.IsOffBalanced()) //Not usable while we're offbalanced or immobilized
-			return
-		if(user.m_intent == MOVE_INTENT_RUN)
-			to_chat(user, span_warning("I can't focus on this while running."))
-			return
-		if(user.magearmor == 0 && HAS_TRAIT(user, TRAIT_MAGEARMOR))	//The magearmor is ACTIVE, so we break magearmor to guard.
-			user.magearmor = 1
-			user.apply_status_effect(/datum/status_effect/buff/magearmor)
-			to_chat(user, span_warning("I drop my Mage Armor to protect myself!"))
-		user.apply_status_effect(/datum/status_effect/buff/clash)
+/datum/rmb_intent/riposte/special_attack(mob/living/user, atom/target)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.try_guard()
 
 /datum/rmb_intent/guard
 	name = "guarde"
@@ -274,11 +262,9 @@
 	desc = "Your attacks have -1 strength and will never critically-hit. Useful for longer punishments, play-fighting, and bloodletting.\nRight click will attempt to steal from the target."
 	icon_state = "rmbweak"
 
-/datum/rmb_intent/weak/special_attack(mob/living/user, atom/target)
-	if(!target.Adjacent(user))
+/datum/rmb_intent/weak/special_attack(mob/living/carbon/human/user, mob/living/carbon/human/target)
+	if(!istype(target) || !istype(user) || !target.Adjacent(user))
 		return
-	if(!ishuman(user) || !ishuman(target))
-		return
-	var/mob/living/carbon/human/H = user
-	H.attempt_steal(user, target)
-	. = ..()
+	
+	user.attempt_steal(user, target)
+	return ..()

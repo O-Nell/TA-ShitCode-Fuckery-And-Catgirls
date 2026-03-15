@@ -4,7 +4,7 @@
 	desc = "A fiery explosion waiting to be coaxed from its glass prison."
 	icon_state = "bbomb"
 	icon = 'icons/roguetown/items/misc.dmi'
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 0
 	slot_flags = ITEM_SLOT_HIP
 	throw_speed = 0.5
@@ -14,6 +14,11 @@
 	var/PVE_damage = 160
 	grid_width = 32
 	grid_height = 64
+
+/obj/item/bomb/get_mechanics_examine(mob/user)
+	. = ..()
+	. += span_info("Left-click with a torch, lamptern, flint, or another ignitioneer to light its fuse. Alternatively, the fuse can be lit by using it on a hearth, brazier, scone, or another source of ignition.")
+	. += span_info("Once lit, most bombs will detonate after a very short period of time.")
 
 /obj/item/bomb/Initialize()
 	..()
@@ -246,7 +251,7 @@
 	desc = "A soft sphere with an alchemical mixture and a dispersion mechanism hidden inside. Any pressure will detonate it."
 	icon_state = "smokebomb"
 	icon = 'icons/roguetown/items/misc.dmi'
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 0
 	slot_flags = ITEM_SLOT_HIP
 	throw_speed = 0.5
@@ -407,7 +412,9 @@
 
 /obj/item/satchel_bomb
 	name = "blastpowder satchel"
-	desc = "A bewicked satchel, stuffed with a multitude of explosive-filled sticks. Too heavy to throw, and too powerful to withstand - for nothing but dust and echoes will remain, once the shockwave abates."
+	desc = "A bewicked satchel, stuffed with a multitude of explosive-filled sticks. Too heavy to throw, and too powerful to withstand - for nothing but dust and echoes will remain, once \
+	the shockwave abates. </br>'When the fuse reaches its zenith, the blastpowder will detonate. The explosion will generate a temperature of almost one hundred million thermes. Don't be \
+	here when it blows.'"
 	icon_state = "satchel_bomb"
 	var/lit_state = "satchel_bomb-lit"
 	icon = 'icons/roguetown/items/misc.dmi'
@@ -633,7 +640,6 @@
 	var/datum/effect_system/smoke_spread/smoke_type = /datum/effect_system/smoke_spread
 	grid_width = 32
 	grid_height = 32
-
 
 /obj/item/impact_grenade/smoke/explodes()
 	var/turf/T = get_turf(src)

@@ -1338,7 +1338,7 @@
 	if(U.has_status_effect(/datum/status_effect/buff/clash) && !target.has_status_effect(/datum/status_effect/buff/clash))
 		if(user == parent)
 			bad_guard = TRUE
-	if(ishuman(target) && target.get_active_held_item() && !bad_guard)
+	if(ishuman(target) && (target.get_active_held_item() || target.has_status_effect(/datum/status_effect/buff/clash)) && !bad_guard)
 		var/mob/living/carbon/human/HM = target
 		var/obj/item/IM = target.get_active_held_item()
 		var/obj/item/IU
@@ -1392,9 +1392,14 @@
 		playsound(H, sfx_on_apply, 100, TRUE)
 
 /datum/status_effect/buff/clash/tick()
-	if(!owner.get_active_held_item() || !(owner.mobility_flags & MOBILITY_STAND))
+	if(!(owner.mobility_flags & MOBILITY_STAND))
 		var/mob/living/carbon/human/H = owner
 		H.bad_guard()
+		return
+	if(!owner.get_active_held_item())
+		if(!ishuman(owner) || owner.get_skill_level(/datum/skill/combat/unarmed) < 3)
+			var/mob/living/carbon/human/H = owner
+			H.bad_guard(span_warning("I'm not skilled enough in the art of unarmed combat to maintain my guard without a weapon!"))
 
 /datum/status_effect/buff/clash/on_remove()
 	. = ..()
@@ -1421,29 +1426,29 @@
 	desc = span_notice("I am on guard, and ready to clash. If I am hit, I will successfully defend. Attacking will make me lose my focus.")
 	icon_state = "clash"
 
-/// Brief buffer after a successful spell deflection. This allows the player to deflect a single spell that has multiple projectiles - or if multiple projectiles are fired by different people in quick succession, for funny anime moment.
-/// While active, subsequent deflectable projectiles/spells are also deflected without requiring guard.
-/datum/status_effect/buff/spell_parry_buffer
-	id = "spell_parry_buffer"
+/// Brief buffer after a successful deflection (guard vs spells, projectiles, or weapon specials).
+/// While active, subsequent deflectable attacks are also deflected without requiring guard.
+/datum/status_effect/buff/parry_buffer
+	id = "parry_buffer"
 	duration = 1 SECONDS
-	alert_type = /atom/movable/screen/alert/status_effect/buff/spell_parry_buffer
+	alert_type = /atom/movable/screen/alert/status_effect/buff/parry_buffer
 
-/datum/status_effect/buff/spell_parry_buffer/on_apply()
+/datum/status_effect/buff/parry_buffer/on_apply()
 	. = ..()
 	RegisterSignal(owner, COMSIG_ATOM_BULLET_ACT, PROC_REF(buffer_struck_by_projectile), TRUE)
 
-/datum/status_effect/buff/spell_parry_buffer/on_remove()
+/datum/status_effect/buff/parry_buffer/on_remove()
 	UnregisterSignal(owner, COMSIG_ATOM_BULLET_ACT)
 	. = ..()
 
-/datum/status_effect/buff/spell_parry_buffer/proc/buffer_struck_by_projectile(datum/source, obj/projectile/P)
+/datum/status_effect/buff/parry_buffer/proc/buffer_struck_by_projectile(datum/source, obj/projectile/P)
 	if(P.guard_deflectable)
 		if(P.on_guard_deflect(owner, silent = TRUE))
 			return COMPONENT_ATOM_BLOCK_BULLET
 
-/atom/movable/screen/alert/status_effect/buff/spell_parry_buffer
-	name = "Spell Parry"
-	desc = span_notice("A brief window of spell deflection lingers from my guard.")
+/atom/movable/screen/alert/status_effect/buff/parry_buffer
+	name = "Parry"
+	desc = span_notice("A brief window of deflection lingers from my guard.")
 	icon_state = "clash"
 
 /atom/movable/screen/alert/status_effect/buff/clash/limbguard
@@ -1764,17 +1769,6 @@
 	if(istype(human))
 		human.pain_threshold -= 50
 
-/datum/status_effect/buff/magic/knowledge
-	id = "intelligence"
-	alert_type = /atom/movable/screen/alert/status_effect/buff/magic/knowledge
-	effectedstats = list("intelligence" = 2)
-	duration = 10 MINUTES
-
-/atom/movable/screen/alert/status_effect/buff/magic/knowledge
-	name = "runic cunning"
-	desc = "I am magically astute."
-	icon_state = "buff"
-
 /datum/status_effect/buff/nocblessing
 	id = "nocblessing"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/nocblessing
@@ -2085,3 +2079,77 @@
 	name = "Broken Scales"
 	desc = "My natural defenses are gone! I am lighter, but far weaker."
 	icon_state = "buff"
+
+/datum/status_effect/buff/stagehands_silence
+	id = "Stagehand"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/stagehands_silence
+	duration = 20 MINUTES
+	// this was supposed to only apply if you had less than 12 speed but it broke whenever other spd mods applied. 
+	// i couldnt fix it, unfortunately.
+	// IF people use it to game just fucking remove it we cant have shiut in thjis codebase anymore
+	effectedstats = list(STATKEY_SPD = 1)
+
+
+/atom/movable/screen/alert/status_effect/buff/stagehands_silence
+	name = "Stangehand's Silence"
+	desc = "The slow quicken. My footsteps are quiet and I can move faster while sneaking."
+
+/datum/status_effect/buff/stagehands_silence/on_apply()
+	. = ..()
+	to_chat(owner, span_warning("My footsteps feel lighter and quieter. What is that droning sound in my head...?"))
+	// inspired by matthiosmuffle
+	ADD_TRAIT(owner, TRAIT_SILENT_FOOTSTEPS, "xylixboon")
+	ADD_TRAIT(owner, TRAIT_LIGHT_STEP, "xylixboon") 
+
+
+/datum/status_effect/buff/stagehands_silence/on_remove()
+	. = ..()
+	to_chat(owner, span_warning("The droning quiets. My footsteps are noisy, again."))
+	REMOVE_TRAIT(owner, TRAIT_SILENT_FOOTSTEPS, "xylixboon")
+	REMOVE_TRAIT(owner, TRAIT_LIGHT_STEP, "xylixboon")
+
+/datum/status_effect/buff/transparent_eyeball
+	id = "transparent_eyeball"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/transparent_eyeball
+	duration = 20 MINUTES
+	// this should hook into the scrying code rather than anything here
+	// it just gives them less chance to break shit. thats it.
+
+// https://www.youtube.com/watch?v=v_UvrYT26o4
+// https://en.wikipedia.org/wiki/Transparent_eyeball
+/atom/movable/screen/alert/status_effect/buff/transparent_eyeball
+	name = "Transparent Eyeball"
+	desc = "Nepolx's red surface has blessed me... I shall find it easier to use scrying orbs." + span_gamedeadsay("\n...I AM NOTHING, I SEE ALL.")
+
+/datum/status_effect/buff/transparent_eyeball/on_apply()
+	. = ..()
+	to_chat(owner, span_gamedeadsay("I feel unbound to my mortal coil-- scrying orbs will be easier to use, for a time!"))
+
+/datum/status_effect/buff/transparent_eyeball/on_remove()
+	. = ..()
+	to_chat(owner, span_gamedeadsay("I become one with myself, again..."))
+
+/datum/status_effect/buff/hermes_trismegistus
+	id = "hermes_trismegistus"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/hermes_trismegistus
+	duration = 20 MINUTES
+	var/original_skill = null // we need scope for the whole thing so this gotta b here and null
+	var/gave_buff = FALSE
+
+/atom/movable/screen/alert/status_effect/buff/hermes_trismegistus
+	name = "Hermetick Blessing" // yes, hermetick. with a k. 
+	desc = "Looking at HERMES has given me a blessing of the Stars... written words begin to make more sense." // dont ask how this works its magic biyatch
+
+/datum/status_effect/buff/hermes_trismegistus/on_apply()
+	. = ..()
+	if(owner)
+		original_skill = owner.get_skill_level(/datum/skill/misc/reading) // cache it
+		if(original_skill < SKILL_LEVEL_JOURNEYMAN)
+			owner.adjust_skillrank(/datum/skill/misc/reading, 1, TRUE) // +1 reading. this technically lets u read if ur illtierate, ithink. idk. its cool, ok.
+			gave_buff = TRUE
+
+/datum/status_effect/buff/hermes_trismegistus/on_remove()
+	. = ..()
+	if(gave_buff) // because we ensure that the buff was actually given out, and due to the 0-3 scale of it, we can just
+		owner.adjust_skillrank(/datum/skill/misc/reading, -1, TRUE) // -1 skill once it wears off and it (should) be fine.
+		to_chat(owner, span_warning("The blessing of HERMES begins to wear off. The written word loses it's meaning in my skull."))

@@ -44,6 +44,8 @@
 		/datum/advclass/mercenary/routier,
 		/datum/advclass/mercenary/rumaclan,
 		/datum/advclass/mercenary/rumaclan/sasu,
+		/datum/advclass/mercenary/hangyaku,
+		/datum/advclass/mercenary/chonin,
 		/datum/advclass/mercenary/seonjang,
 		/datum/advclass/mercenary/steppesman,
 		/datum/advclass/mercenary/warscholar,
@@ -57,7 +59,6 @@
 		/datum/advclass/mercenary/trollslayer,
 		/datum/advclass/mercenary/lirvanmerc,
     /datum/advclass/mercenary/twilight_gunslinger,
-    /datum/advclass/mercenary/twilight_grenzelhoft_jager,
 	/datum/advclass/mercenary/twilight_heishi,
 	/datum/advclass/mercenary/twilight_yohei
 	)
