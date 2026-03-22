@@ -4,7 +4,136 @@
 	extra_range = 5
 	persistent_loop = TRUE
 	var/stress2give = /datum/stressevent/music
-	sound_group = /datum/sound_group/instruments //reserves sound channels for up to 10 instruments at a time
+	sound_group = null
+
+GLOBAL_LIST_EMPTY(instrument_band_lobbies)
+
+/proc/instrument_band_member_id(mob/living/user)
+	if(!user)
+		return null
+	if(user.mind)
+		return "[REF(user.mind)]"
+	return "[REF(user)]"
+
+/datum/instrument_band_slot
+	var/member_id
+	var/member_name
+	var/instrument_type
+	var/instrument_name
+	var/song_file
+	var/datum/weakref/instrument_ref
+
+/datum/instrument_band_lobby
+	var/owner_id
+	var/owner_name
+	var/datum/weakref/owner_ref
+	var/list/member_slots = list() // key: instrument instance ref text
+
+/datum/instrument_band_lobby/proc/register_owner(mob/living/user, obj/item/rogue/instrument/instrument, song_file)
+	owner_id = instrument_band_member_id(user)
+	owner_name = user.real_name
+	owner_ref = WEAKREF(user)
+	add_or_replace_member(user, instrument, song_file)
+
+/datum/instrument_band_lobby/proc/add_or_replace_member(mob/living/user, obj/item/rogue/instrument/instrument, song_file)
+	var/member_id = instrument_band_member_id(user)
+	if(!member_id || !instrument || !song_file)
+		return FALSE
+	var/slot_key = "[REF(instrument)]"
+	var/datum/instrument_band_slot/slot = member_slots[slot_key]
+	if(!slot)
+		slot = new
+		member_slots[slot_key] = slot
+	var/old_member = slot.member_name
+	slot.member_id = member_id
+	slot.member_name = user.real_name
+	slot.instrument_type = slot_key
+	slot.instrument_name = instrument.name
+	slot.song_file = song_file
+	slot.instrument_ref = WEAKREF(instrument)
+
+	if(owner_id && owner_id != member_id)
+		var/mob/living/owner_mob = owner_ref?.resolve()
+		if(owner_mob)
+			if(old_member && old_member != user.real_name)
+				to_chat(owner_mob, span_notice("[user.real_name] replaced [old_member] on [instrument.name] in your band lobby."))
+			else
+				to_chat(owner_mob, span_notice("[user.real_name] joined your band lobby with [instrument.name]."))
+	return TRUE
+
+/datum/instrument_band_lobby/proc/remove_member_by_id(member_id)
+	for(var/slot_key in member_slots.Copy())
+		var/datum/instrument_band_slot/slot = member_slots[slot_key]
+		if(slot?.member_id == member_id)
+			member_slots -= slot_key
+
+/datum/instrument_band_lobby/proc/get_active_slots()
+	var/list/active_slots = list()
+	for(var/slot_key in member_slots.Copy())
+		var/datum/instrument_band_slot/slot = member_slots[slot_key]
+		if(!slot)
+			member_slots -= slot_key
+			continue
+		var/obj/item/rogue/instrument/instrument = slot.instrument_ref?.resolve()
+		if(!instrument || QDELETED(instrument))
+			member_slots -= slot_key
+			continue
+		active_slots += slot
+	return active_slots
+
+/datum/instrument_band_lobby/proc/get_title()
+	if(owner_name)
+		return "[owner_name]'s Band"
+	return "Unnamed Band"
+
+/datum/instrument_band_lobby/proc/is_within_range(atom/reference, range = 10)
+	if(!reference)
+		return FALSE
+	var/turf/reference_turf = get_turf(reference)
+	if(!reference_turf)
+		return FALSE
+	for(var/datum/instrument_band_slot/slot in get_active_slots())
+		var/obj/item/rogue/instrument/instrument = slot.instrument_ref?.resolve()
+		if(!instrument)
+			continue
+		if(get_dist(reference_turf, instrument) <= range)
+			return TRUE
+	return FALSE
+
+/datum/looping_sound/instrument/New(_parent, start_immediately=FALSE, _direct=FALSE, _channel = 0)
+	. = ..(_parent, FALSE, _direct, _channel)
+	// Instruments can be widespread on the map. Reserve channels only while actively playing.
+	if(channel)
+		SSsounds.free_datum_channels(src)
+		channel = null
+	if(start_immediately)
+		start()
+
+/datum/looping_sound/instrument/start(atom/on_behalf_of)
+	if(!channel)
+		channel = SSsounds.reserve_sound_channel(src)
+		if(!channel)
+			return
+	..()
+
+/datum/looping_sound/instrument/stop(null_parent)
+	if(channel)
+		for(var/client/C in GLOB.clients)
+			if(!(src in C.played_loops))
+				continue
+			var/list/L = C.played_loops[src]
+			var/sound/SD = L?["SOUND"]
+			var/stop_channel = SD?.channel || channel
+			if(C.mob)
+				C.mob.stop_sound_channel(stop_channel)
+			else
+				SEND_SOUND(C, sound(null, repeat = 0, wait = 0, channel = stop_channel))
+			C.played_loops -= src
+		thingshearing = list()
+	. = ..(null_parent)
+	if(channel)
+		SSsounds.free_datum_channels(src)
+		channel = null
 
 /obj/item/rogue/instrument
 	name = ""
