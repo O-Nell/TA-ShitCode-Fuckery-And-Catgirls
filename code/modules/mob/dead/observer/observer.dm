@@ -82,7 +82,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 /mob/dead/observer/rogue/Move(n, direct)
 	if(world.time < next_gmove)
 		return
-	next_gmove = world.time + 1
+	next_gmove = world.time + 3
 
 	setDir(direct)
 
@@ -381,6 +381,7 @@ Works together with spawning an observer, noted above.
 	ghost.ghostize_time = world.time
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
 	ghost.can_reenter_corpse = can_reenter_corpse
+	ghost.advjob = src.advjob
 	ghost.key = key
 	return ghost
 
@@ -794,7 +795,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 	var/bt = world.time
 	SEND_SOUND(src, sound('sound/misc/notice (2).ogg'))
-	if(alert(src, "You have been summoned you to destroy Azuria!", "Join the Horde", "Yes", "No") == "Yes")
+	if(alert(src, "You have been summoned you to destroy [SSticker.realm_name]!", "Join the Horde", "Yes", "No") == "Yes")
 		if(world.time > bt + 5 MINUTES)
 			to_chat(src, span_warning("Too late."))
 			return FALSE

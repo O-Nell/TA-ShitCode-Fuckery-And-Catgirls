@@ -48,27 +48,6 @@
 	tranged = TRUE
 	noaa = TRUE
 
-/datum/intent/knuckles/strike
-	name = "punch"
-	blade_class = BCLASS_BLUNT
-	attack_verb = list("punches", "clocks")
-	hitsound = list('sound/combat/hits/punch/punch_hard (1).ogg', 'sound/combat/hits/punch/punch_hard (2).ogg', 'sound/combat/hits/punch/punch_hard (3).ogg')
-	chargetime = 0
-	penfactor = BLUNT_DEFAULT_PENFACTOR
-	clickcd = 8
-	swingdelay = 0
-	icon_state = "inpunch"
-	item_d_type = "blunt"
-	intent_intdamage_factor = BLUNT_DEFAULT_INT_DAMAGEFACTOR // This might be a mistake
-
-/datum/intent/knuckles/strike/wallop
-	name = "wallop"
-	blade_class = BCLASS_TWIST
-	attack_verb = list("wallops", "thwacks", "thwamps")
-	damfactor = 1.1
-	intent_intdamage_factor = 0.6
-	icon_state = "inbash"	// Wallop is too long for a button; placeholder.
-
 /// INTENT DATUMS	^
 
 /obj/item/rogueweapon/lordscepter
@@ -157,13 +136,14 @@
 				return
 
 /obj/item/rogueweapon/mace/stunmace
-	force = 15
-	force_wielded = 15
+	force = 25
+	force_wielded = 25
 	name = "stunmace"
 	icon = 'icons/roguetown/weapons/misc32.dmi'
 	icon_state = "stunmace0"
 	desc = "Pain is our currency here."
 	gripped_intents = null
+	wlength = WLENGTH_NORMAL
 	w_class = WEIGHT_CLASS_NORMAL
 	possible_item_intents = list(/datum/intent/mace/strike/stunner, /datum/intent/mace/smash/stunner)
 	wbalance = WBALANCE_NORMAL
@@ -171,6 +151,15 @@
 	wdefense = 0
 	var/charge = 100
 	var/on = FALSE
+
+/obj/item/rogueweapon/mace/stunmace/getonmobprop(tag)
+	. = ..()
+	if(tag)
+		switch(tag)
+			if("gen")
+				return list("shrink" = 0.5,"sx" = -8,"sy" = -7,"nx" = 10,"ny" = -7,"wx" = -1,"wy" = -8,"ex" = 1,"ey" = -7,"northabove" = 0,"southabove" = 1,"eastabove" = 1,"westabove" = 0,"nturn" = 91,"sturn" = -90,"wturn" = -90,"eturn" = 90,"nflip" = 0,"sflip" = 8,"wflip" = 8,"eflip" = 0)
+			if("onbelt")
+				return list("shrink" = 0.4,"sx" = -3,"sy" = -4,"nx" = 4,"ny" = -5,"wx" = 0,"wy" = -5,"ex" = 2,"ey" = -5,"nturn" = 0,"sturn" = 70,"wturn" = 0,"eturn" = 0,"nflip" = 0,"sflip" = 1,"wflip" = 0,"eflip" = 0,"northabove" = 0,"southabove" = 1,"eastabove" = 1,"westabove" = 0)
 
 /datum/intent/mace/strike/stunner/afterchange()
 	var/obj/item/rogueweapon/mace/stunmace/I = masteritem
@@ -201,8 +190,13 @@
 /obj/item/rogueweapon/mace/stunmace/funny_attack_effects(mob/living/target, mob/living/user, nodmg)
 	. = ..()
 	if(on)
-		target.electrocute_act(5, src)
-		charge -= 33
+		if(target.stamina >= target.max_stamina)
+			target.electrocute_act(5, src)
+			charge -= 6
+		else/// TODO: Check target.STACON!!!!!!!!!! - EDIT: I never did. Whoops!
+			target.energy_add(-10)
+			target.stamina_add(5)
+			charge -= 3
 		if(charge <= 0)
 			on = FALSE
 			charge = 0
@@ -221,6 +215,8 @@
 /obj/item/rogueweapon/mace/stunmace/attack_self(mob/user)
 	if(on)
 		on = FALSE
+		force = 25
+		force_wielded = 25
 	else
 		if(charge <= 33)
 			to_chat(user, span_warning("It's out of juice."))
@@ -228,6 +224,8 @@
 		user.visible_message(span_warning("[user] flicks [src] on."))
 		on = TRUE
 		charge--
+		force = 6
+		force_wielded = 6
 	playsound(user, pick('sound/items/stunmace_toggle (1).ogg','sound/items/stunmace_toggle (2).ogg','sound/items/stunmace_toggle (3).ogg'), 100, TRUE)
 	if(user.a_intent)
 		var/datum/intent/I = user.a_intent
@@ -245,6 +243,8 @@
 	if(charge <= 0)
 		on = FALSE
 		charge = 0
+		force = 25
+		force_wielded = 25
 		update_icon()
 		var/mob/user = loc
 		if(istype(user))
@@ -261,6 +261,8 @@
 			user.electrocute_act(5, src)
 		on = FALSE
 		charge = 0
+		force = 25
+		force_wielded = 25
 		update_icon()
 		playsound(src, pick('sound/items/stunmace_toggle (1).ogg','sound/items/stunmace_toggle (2).ogg','sound/items/stunmace_toggle (3).ogg'), 100, TRUE)
 
@@ -335,7 +337,7 @@
 	icon_state = "freiplug"
 	slot_flags = ITEM_SLOT_RING
 	icon = 'icons/roguetown/weapons/special/freifechter32.dmi'
-	possible_item_intents = list(/datum/intent/dagger/thrust, /datum/intent/dagger/thrust/pick, /datum/intent/knuckles/strike)
+	possible_item_intents = list(/datum/intent/dagger/thrust, /datum/intent/dagger/thrust/pick, /datum/intent/mace/smash)
 
 /obj/item/rogueweapon/katar/psydon
 	name = "psydonic katar"
@@ -357,115 +359,28 @@
 		added_def = 2,\
 	)
 
-/obj/item/rogueweapon/knuckles/psydon
-	name = "psydonic knuckles"
-	desc = "A simple piece of harm molded in a holy mixture of steel and silver, finished with three stumps - Psydon's crown - to crush the heretics' garments and armor into smithereens."
-	icon_state = "psyknuckle"
-	force = 27 //Smaller silver blunt weapons should have a +2-3 damage bonus, compared to their steel counterparts.
-	wdefense = 5
+/obj/item/rogueweapon/katar/silver
+	name = "silver katar"
+	desc = "An exotic weapon that was born from frugality and scarcity, strongly associated with Saint Abenjunne of Astrata. As the folktale goes, this humble preacher belonged to an old village, whose \
+	lyvestock would be hunted every nite by a ferocious verebeaste. Though no weapon of steel-nor-iron could hope to rupture its hide, they had little silver to call upon; save for the abbey's lone \
+	psicrucifix. After praying for guidence, the preacher was said to've been guided by a ray of daelight to the silvered steeple - and through divine heat, melted it into a hand-dagger that would soon \
+	rip the verebeaste apart."
+	icon_state = "silverkatar"
+	force = 19
+	wdefense = 3
 	is_silver = TRUE
-	smeltresult = /obj/item/ingot/silverblessed
+	smeltresult = /obj/item/ingot/silver
 
-/obj/item/rogueweapon/knuckles/psydon/ComponentInitialize()
+/obj/item/rogueweapon/katar/silver/ComponentInitialize()
 	AddComponent(\
 		/datum/component/silverbless,\
 		pre_blessed = BLESSING_NONE,\
-		silver_type = SILVER_PSYDONIAN,\
+		silver_type = SILVER_TENNITE,\
 		added_force = 0,\
 		added_blade_int = 0,\
 		added_int = 50,\
 		added_def = 2,\
 	)
-
-/obj/item/rogueweapon/knuckles/psydon/old
-	name = "enduring knuckles"
-	desc = "A simple piece of harm molded in a holy mixture of steel and silver, its holy blessing long since faded. You are HIS weapon, you needn't fear Aeon."
-	icon_state = "psyknuckle"
-	force = 22
-	wdefense = 6
-	is_silver = FALSE
-	smeltresult = /obj/item/ingot/steel
-	color = COLOR_FLOORTILE_GRAY
-
-/obj/item/rogueweapon/knuckles/psydon/old/ComponentInitialize()
-	return
-
-/obj/item/rogueweapon/knuckles
-	name = "steel knuckles"
-	desc = "A mean looking pair of steel knuckles."
-	force = 25
-	possible_item_intents = list(/datum/intent/knuckles/strike,/datum/intent/mace/smash, /datum/intent/knuckles/strike/wallop)
-	icon = 'icons/roguetown/weapons/unarmed32.dmi'
-	icon_state = "steelknuckle"
-	gripsprite = FALSE
-	wlength = WLENGTH_SHORT
-	w_class = WEIGHT_CLASS_SMALL
-	slot_flags = ITEM_SLOT_HIP
-	parrysound = list('sound/combat/parry/pugilism/unarmparry (1).ogg','sound/combat/parry/pugilism/unarmparry (2).ogg','sound/combat/parry/pugilism/unarmparry (3).ogg')
-	sharpness = IS_BLUNT
-	max_integrity = 200
-	swingsound = list('sound/combat/wooshes/punch/punchwoosh (1).ogg','sound/combat/wooshes/punch/punchwoosh (2).ogg','sound/combat/wooshes/punch/punchwoosh (3).ogg')
-	associated_skill = /datum/skill/combat/unarmed
-	throwforce = 12
-	wdefense = 4
-	wbalance = WBALANCE_SWIFT
-	anvilrepair = /datum/skill/craft/weaponsmithing
-	smeltresult = /obj/item/ingot/steel
-	grid_width = 64
-	grid_height = 32
-	special = /datum/special_intent/upper_cut
-/obj/item/rogueweapon/knuckles/getonmobprop(tag)
-	. = ..()
-	if(tag)
-		switch(tag)
-			if("gen")
-				return list("shrink" = 0.2,"sx" = -7,"sy" = -4,"nx" = 7,"ny" = -4,"wx" = -3,"wy" = -4,"ex" = 1,"ey" = -4,"northabove" = 0,"southabove" = 1,"eastabove" = 1,"westabove" = 0,"nturn" = 110,"sturn" = -110,"wturn" = -110,"eturn" = 110,"nflip" = 0,"sflip" = 8,"wflip" = 8,"eflip" = 0)
-			if("onbelt")
-				return list("shrink" = 0.1,"sx" = -2,"sy" = -5,"nx" = 4,"ny" = -5,"wx" = 0,"wy" = -5,"ex" = 2,"ey" = -5,"nturn" = 0,"sturn" = 0,"wturn" = 0,"eturn" = 0,"nflip" = 0,"sflip" = 0,"wflip" = 0,"eflip" = 0,"northabove" = 0,"southabove" = 1,"eastabove" = 1,"westabove" = 0)
-
-/obj/item/rogueweapon/knuckles/bronzeknuckles
-	name = "bronze knuckles"
-	desc = "A mean looking pair of bronze knuckles. Mildly heavier than it's steel counterpart, making it a solid defensive option, if less wieldy."
-	force = 22
-	possible_item_intents = list(/datum/intent/knuckles/strike, /datum/intent/mace/smash, /datum/intent/knuckles/strike/wallop)
-	icon = 'icons/roguetown/weapons/unarmed32.dmi'
-	icon_state = "bronzeknuckle"
-	gripsprite = FALSE
-	wlength = WLENGTH_SHORT
-	w_class = WEIGHT_CLASS_SMALL
-	slot_flags = ITEM_SLOT_HIP
-	parrysound = list('sound/combat/parry/pugilism/unarmparry (1).ogg','sound/combat/parry/pugilism/unarmparry (2).ogg','sound/combat/parry/pugilism/unarmparry (3).ogg')
-	sharpness = IS_BLUNT
-	max_integrity = 200
-	swingsound = list('sound/combat/wooshes/punch/punchwoosh (1).ogg','sound/combat/wooshes/punch/punchwoosh (2).ogg','sound/combat/wooshes/punch/punchwoosh (3).ogg')
-	associated_skill = /datum/skill/combat/unarmed
-	throwforce = 12
-	wdefense = 6
-	anvilrepair = /datum/skill/craft/weaponsmithing
-	smeltresult = /obj/item/ingot/bronze
-
-/obj/item/rogueweapon/knuckles/aknuckles
-	name = "decrepit knuckles"
-	desc = "a set of knuckles made of ancient metals, Aeon's grasp wither their form."
-	icon_state = "aknuckle"
-	force = 12
-	max_integrity = 100
-	wdefense = 4
-	smeltresult = /obj/item/ingot/aalloy
-	blade_dulling = DULLING_SHAFT_CONJURED
-
-/obj/item/rogueweapon/knuckles/paknuckles
-	name = "ancient knuckles"
-	desc = "a set of knuckles made of ancient metals, Aeon's grasp has been lifted from their form."
-	icon_state = "aknuckle"
-	smeltresult = /obj/item/ingot/aaslag
-
-
-/obj/item/rogueweapon/knuckles/eora
-	name = "close caress"
-	desc = "Some times call for a more intimate approach."
-	icon_state = "eoraknuckle"
-	force = 28 // lower this to 27 if its too much
 
 ///Peasantry / Militia Weapon Pack///
 
@@ -498,7 +413,7 @@
 	desc = "Shovels have always held some manner of importance in a militiaman's lyfe. Instead of digging corpsepits, however, this poleaxe will now fill them up."
 	icon_state = "peasantwaraxe"
 	possible_item_intents = list(/datum/intent/axe/cut, /datum/intent/axe/chop, SPEAR_BASH) //bash is for nonlethal takedowns, only targets limbs
-	gripped_intents = list(/datum/intent/rend/reach, /datum/intent/axe/chop/battle/greataxe, /datum/intent/sword/peel/big, SPEAR_BASH)
+	gripped_intents = list(/datum/intent/rend/reach, /datum/intent/axe/chop/long, /datum/intent/sword/peel/big, SPEAR_BASH)
 	force = 15
 	force_wielded = 25
 	minstr = 10
@@ -513,7 +428,7 @@
 	desc = "'Do you think Psydon stays in Heaven because He too lives in fear of what He's created?' </br>A silver shovel, improvised - perhaps, by the hands of a particularly desperate gravedigger - to fill a polearm's duty."
 	icon_state = "silvershovelwaraxe"
 	possible_item_intents = list(/datum/intent/axe/cut, /datum/intent/axe/chop, SPEAR_BASH) //bash is for nonlethal takedowns, only targets limbs
-	gripped_intents = list(/datum/intent/rend/reach, /datum/intent/axe/chop/battle/greataxe, /datum/intent/sword/peel/big, SPEAR_BASH)
+	gripped_intents = list(/datum/intent/rend/reach, /datum/intent/axe/chop/long, /datum/intent/sword/peel/big, SPEAR_BASH)
 	force = 15
 	force_wielded = 25
 	minstr = 11
@@ -858,6 +773,29 @@
 	max_blade_int = 200
 	max_integrity = 200
 
+/obj/item/rogueweapon/handclaw/gronn/silver
+	name = "Silver Ravager Claws"
+	desc = "A trinity of silver claws, forged in defiant reverence of the Old Ways that still permeate throughout the Northern Empty. \
+			The psicruciformic edge shreds through the hide of thralls; resurrected corpses from Fjallic antiquity, said to've been born through faithlessness and despair. \
+			Few shamen hold the strength to wield it, and fewer will speak of what they, alone, know - the true fate of the Weeping Father. \
+			'Here we stand, to turn and face the odds; sacrifice yourself, or bow to lesser gods!'"
+	smeltresult = /obj/item/ingot/silver
+	icon_state = "silverclaws"
+	wdefense = 5
+	max_blade_int = 300
+	max_integrity = 225
+	is_silver = TRUE
+
+/obj/item/rogueweapon/handclaw/gronn/silver/ComponentInitialize()
+	AddComponent(\
+		/datum/component/silverbless,\
+		pre_blessed = BLESSING_NONE,\
+		silver_type = SILVER_TENNITE,\
+		added_force = 0,\
+		added_blade_int = 100,\
+		added_int = 50,\
+		added_def = 2,\
+	)
 
 /obj/item/rogueweapon/handclaw/getonmobprop(tag)
 	. = ..()
@@ -891,7 +829,7 @@
 /datum/intent/claw/lunge/gronn
 	damfactor = 1.1
 	swingdelay = 5
-	clickcd = 10
+	clickcd = CLICK_CD_QUICK
 	penfactor = 45
 
 /datum/intent/claw/cut
@@ -937,6 +875,7 @@
 	item_d_type = "slash"
 	misscost = 10
 	intent_intdamage_factor = 0.05
+	demolition_mod = 0.05
 
 /datum/intent/claw/rend/steel
 	damfactor = 3
@@ -1140,7 +1079,7 @@
 	if(active_item)
 		return
 	active_item = TRUE
-	if(user.job == "Man at Arms")
+	if((user.job == "Man at Arms") || (user.job == "Royal Guard"))
 		to_chat(user, span_suppradio("The standard's runes pulse, accepting me as its <b>master</b>."))
 		user.change_stat(STATKEY_LCK, 3)
 		user.change_stat(STATKEY_PER, 2)
@@ -1150,6 +1089,15 @@
 			to_chat(user, span_suppradio("<small>It remains ready for your word. You need only ask.</small>"))
 			user.verbs |= /mob/proc/standard_position
 			user.verbs |= /mob/proc/standard_rally
+	if((user.job == "Vanguard"))
+		to_chat(user, span_suppradio("The standard's runes pulse, accepting me as its <b>master</b>."))
+		user.change_stat(STATKEY_LCK, 3)
+		user.change_stat(STATKEY_PER, 2)
+		user.add_stress(/datum/stressevent/keep_standard)
+		ADD_TRAIT(user, TRAIT_IGNOREDAMAGESLOWDOWN, TRAIT_GENERIC)
+		if(HAS_TRAIT(user, TRAIT_STANDARD_BEARER))
+			to_chat(user, span_suppradio("<small>It remains ready for your word. You need only ask.</small>"))
+			user.verbs |= /mob/proc/standard_position_vanguard
 	else
 		to_chat(user, span_suicide("The standard's runes pulse, rejecting me as its <b>master</b>."))
 
@@ -1158,7 +1106,7 @@
 	if(!active_item)
 		return
 	active_item = FALSE
-	if(user.job == "Man at Arms")
+	if((user.job == "Man at Arms") || (user.job == "Royal Guard"))
 		to_chat(user, span_monkeyhive("The standard's runes pulse, rhythmically, as if sad to see you release your control."))
 		user.change_stat(STATKEY_LCK, -3)
 		user.change_stat(STATKEY_PER, -2)
@@ -1168,6 +1116,15 @@
 			to_chat(user, span_monkeyhive("<small>You feel ill. Was that a mistake?</small>"))
 			user.verbs -= /mob/proc/standard_position
 			user.verbs -= /mob/proc/standard_rally
+	if((user.job == "Vanguard"))
+		to_chat(user, span_monkeyhive("The standard's runes pulse, rhythmically, as if sad to see you release your control."))
+		user.change_stat(STATKEY_LCK, -3)
+		user.change_stat(STATKEY_PER, -2)
+		user.remove_stress(/datum/stressevent/keep_standard)
+		REMOVE_TRAIT(user, TRAIT_IGNOREDAMAGESLOWDOWN, TRAIT_GENERIC)
+		if(HAS_TRAIT(user, TRAIT_STANDARD_BEARER))
+			to_chat(user, span_monkeyhive("<small>You feel ill. Was that a mistake?</small>"))
+			user.verbs -= /mob/proc/standard_position_vanguard
 	else
 		to_chat(user, span_suicide("The standard's runes pulse, as if sighing in relief once I let go."))
 

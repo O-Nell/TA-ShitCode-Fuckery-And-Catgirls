@@ -43,6 +43,7 @@
 	sharedSoullinks = null
 	if(craftingthing)
 		QDEL_NULL(craftingthing)
+	QDEL_LIST(simple_wounds)
 	return ..()
 
 /mob/living/onZImpact(turf/T, levels)
@@ -397,6 +398,12 @@
 		return FALSE
 	if(throwing || !(mobility_flags & MOBILITY_PULL))
 		return FALSE
+	if(isliving(AM) && buckled)
+		var/datum/component/riding/riding_datum = buckled.GetComponent(/datum/component/riding)
+		if(riding_datum)
+			var/mob/living/target = AM
+			to_chat(src, span_warning("I can't drag [target] while mounted."))
+			return FALSE
 
 	AM.add_fingerprint(src)
 
@@ -1163,7 +1170,6 @@
 	if(!instant)
 		if(alert(src, "Do you yield?", "SURRENDER", "Yes", "No") == "No")
 			return
-	log_combat(src, null, "surrendered")
 	surrendering = 1
 	record_round_statistic(STATS_YIELDS)
 	toggle_cmode()
@@ -1172,12 +1178,16 @@
 	vis_contents += flaggy
 	Stun(300)
 	Knockdown(300)
+	drop_all_held_items()
 	apply_status_effect(/datum/status_effect/debuff/breedable)
 	apply_status_effect(/datum/status_effect/debuff/submissive)
 	src.visible_message(span_notice("[src] yields!"))
 	playsound(src, 'sound/misc/surrender.ogg', 100, FALSE, -1, ignore_walls=TRUE)
 	update_vision_cone()
 	addtimer(CALLBACK(src, PROC_REF(end_submit)), 600)
+	log_combat(src, src, "surrendered", null, )
+	log_admin("([key_name(src)]) surrendered at [AREACOORD(src)].")
+	SSblackbox.record_feedback("tally", "submit", 1, "surrenders")
 
 /mob/living/proc/end_submit()
 	surrendering = 0
@@ -1256,8 +1266,9 @@
 		if(!HAS_TRAIT(src, TRAIT_GARROTED))
 			combat_modifier -= 0.3
 		else
+			combat_modifier -= 0.15 // garrote is always harder to escape than a regular grab
 			if(!src.mind)
-				combat_modifier -= 0.3
+				combat_modifier -= 0.3 // mindless victims are even less capable of escaping
 			if(HAS_TRAIT(L, TRAIT_BLACKBAGGER))
 				combat_modifier -= 0.3
 				if(HAS_TRAIT(src, TRAIT_BAGGED))
@@ -2140,7 +2151,7 @@
 	return
 
 /mob/living/look_up()
-	if(client.perspective != MOB_PERSPECTIVE) //We are already looking up.
+	if(client.perspective != MOB_PERSPECTIVE) 
 		stop_looking()
 		return
 	if(client.pixel_x || client.pixel_y)
@@ -2148,31 +2159,40 @@
 		return
 	if(!can_look_up())
 		return
-	changeNext_move(CLICK_CD_MELEE)
-	if(m_intent != MOVE_INTENT_SNEAK)
-		visible_message(span_info("[src] looks up."))
-	var/turf/ceiling = get_step_multiz(src, UP)
+
 	var/turf/T = get_turf(src)
-	if(!ceiling) //We are at the highest z-level.
+	var/turf/ceiling = get_step_multiz(src, UP)
+	var/water_view = istype(T, /turf/open/water) && istype(ceiling, /turf/open/water)
+
+	changeNext_move(CLICK_CD_MELEE)
+
+	if(m_intent != MOVE_INTENT_SNEAK)
+		if(water_view)
+			visible_message(span_info("[src] peers into the thickness of the water above his head."))
+		else
+			visible_message(span_info("[src] looks up."))
+
+	if(!ceiling)
 		if(T.can_see_sky())
 			switch(GLOB.forecast)
 				if("prerain")
-					to_chat(src, span_warning("Dark clouds gather..."))
+					to_chat(src, span_warning("Dark clouds are gathering..."))
 					return
 				if("rain")
-					to_chat(src, span_warning("A wet wind blows."))
+					to_chat(src, span_warning("A damp wind is blowing."))
 					return
 				if("rainbow")
-					to_chat(src, span_notice("A beautiful rainbow!"))
+					to_chat(src, span_notice("Beautiful rainbow!"))
 					return
 				if("fog")
-					to_chat(src, span_warning("I can't see anything, the fog has set in."))
+					to_chat(src, span_warning("Nothing can be seen, a thick fog has set in."))
 					return
-			to_chat(src, span_warning("There is nothing special to say about this weather."))
+			to_chat(src, span_warning("There is nothing unusual about this weather.."))
 			do_time_change()
 		return
-	else if(!istransparentturf(ceiling)) //There is no turf we can look through above us
-		to_chat(src, span_warning("A ceiling above my head."))
+		
+	else if(!istransparentturf(ceiling) && !water_view) 
+		to_chat(src, span_warning("There is a ceiling above my head."))
 		return
 
 	if(T.can_see_sky())
@@ -2186,6 +2206,7 @@
 
 	if(!do_after(src, ttime, target = src))
 		return
+		
 	reset_perspective(ceiling)
 	update_cone_show()
 //	RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(stop_looking)) //We stop looking up if we move.
@@ -2338,10 +2359,24 @@
 	offered_item_ref = WEAKREF(offered_item)
 
 	var/stealthy = (m_intent == MOVE_INTENT_SNEAK)
+	var/obj/item/reagent_containers/glass/offered_item_other = null
+	if(istype(offered_item, /obj/item/reagent_containers/glass) && offered_item?.reagents?.maximum_volume > 0) // we have a drink in our hand
+		offered_item_other = offered_to.offered_item_ref?.resolve()
 
 	if(stealthy)
 		to_chat(src, span_notice("I secretly offer [offered_item] to [offered_to]."))
-		to_chat(offered_to, span_notice("[src] secretly offers [offered_item] to me..."))
+		to_chat(offered_to, span_notice("[offered_to] secretly offers [offered_item] to me..."))
+	else if(!isnull(offered_item_other) && istype(offered_item_other) && offered_item_other?.reagents?.maximum_volume > 0) // Credit to tmyqlfpir; allows for the clinking of everything up to blacksteel tankards.
+		playsound(src,offered_item_other.reagents.maximum_volume > 50 ? 'sound/misc/clink_drink_big.ogg' : 'sound/misc/clink_drink.ogg', 100, TRUE) //Adds a new sound if the clinked container is above 50 drams in size.
+		addtimer(CALLBACK(src, PROC_REF(stop_offering_item)), 0.6 SECONDS)
+		addtimer(CALLBACK(offered_to, PROC_REF(stop_offering_item)), 0.6 SECONDS)
+		visible_message(
+			span_notice("[src] clinks [offered_item] with [offered_to]!"), \
+			span_notice("I clink [offered_item] with [offered_to]!"), \
+			vision_distance = COMBAT_MESSAGE_RANGE, \
+			ignored_mobs = list(offered_to)
+		)
+		to_chat(offered_to, span_notice("[src] clinks [offered_item] with me!"))
 	else
 		visible_message(
 			span_notice("[src] offers [offered_item] to [offered_to] with an outstretched hand."), \

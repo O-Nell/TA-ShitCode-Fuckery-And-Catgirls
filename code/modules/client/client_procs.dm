@@ -356,6 +356,8 @@ GLOBAL_LIST_EMPTY(respawncounts)
 		if(isnull(address) || (address in localhost_addresses))
 			var/datum/admin_rank/localhost_rank = new("!localhost!", R_EVERYTHING, R_DBRANKS, R_EVERYTHING) //+EVERYTHING -DBRANKS *EVERYTHING
 			new /datum/admins(localhost_rank, ckey, 1, 1)
+	check_localhost_command_bar()
+
 	//preferences datum - also holds some persistent data for the client (because we may as well keep these datums to a minimum)
 	prefs = GLOB.preferences_datums[ckey]
 	if(prefs)
@@ -648,6 +650,7 @@ GLOBAL_LIST_EMPTY(respawncounts)
 	return ..()
 
 /client/Destroy()
+	SSmouse_entered.hovers -= src
 	. = ..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
 	STOP_PROCESSING(SSmousecharge, src)
 	QDEL_NULL(droning_sound)

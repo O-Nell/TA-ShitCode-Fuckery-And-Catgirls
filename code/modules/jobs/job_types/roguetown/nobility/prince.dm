@@ -7,7 +7,7 @@
 	total_positions = 2
 	spawn_positions = 2
 	f_title = "Princess"
-	allowed_races = RACES_NO_CONSTRUCT //Maybe a system to force-pick lineage based on king and queen should be implemented. (No it shouldn't.)
+	allowed_races = RACES_SHUNNED_UP //Maybe a system to force-pick lineage based on king and queen should be implemented. (No it shouldn't.)
 	allowed_sexes = list(MALE, FEMALE)
 	allowed_ages = list(AGE_ADULT)
 	advclass_cat_rolls = list(CTAG_HEIR = 20)
@@ -40,19 +40,32 @@
 	. = ..()
 	var/client/player = H?.client
 	if(player.prefs)
-		if(!istype(player.prefs.virtue_origin, /datum/virtue/origin/azuria) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/grenzelhoft) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/otava) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/etrusca))
-			var/list/new_origins = list("Azuria" = /datum/virtue/origin/azuria, 
-			"Grenzelhoft" = /datum/virtue/origin/grenzelhoft,
-			"Otava" = /datum/virtue/origin/otava,
-			"Etrusca" = /datum/virtue/origin/etrusca)
-			var/new_origin
-			var/choice = input(player, "Your origins are not compatible with the [SSticker.realm_type_short]. Where do you hail from?", "ANCESTRY") as anything in new_origins
-			if(choice)
-				new_origin = new_origins[choice]
-			else
-				to_chat(player, span_notice("No choice detected. Picking a random compatible origin."))
-				new_origin = pick(/datum/virtue/origin/grenzelhoft, /datum/virtue/origin/otava, /datum/virtue/origin/etrusca)
-			change_origin(H, new_origin, "Royal line")
+		if(SSmapping.config.map_name == "Rockhill")
+			if(!istype(player.prefs.virtue_origin, /datum/virtue/origin/enigma) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/valorian) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/zybantian))
+				var/list/new_origins = list("Enigma" = /datum/virtue/origin/enigma, 
+				"Valoria" = /datum/virtue/origin/valorian,
+				"Zybantu" = /datum/virtue/origin/zybantian)
+				var/new_origin
+				var/choice = input(player, "Your origins are not compatible with the Kingdom. Where do you hail from?", "ANCESTRY") as anything in new_origins
+				if(choice)
+					new_origin = new_origins[choice]
+				else
+					to_chat(player, span_notice("No choice detected. Picking a random compatible origin."))
+					new_origin = pick(/datum/virtue/origin/enigma, /datum/virtue/origin/valorian, /datum/virtue/origin/zybantian)
+				change_origin(H, new_origin, "Royal line")
+		else
+			if(!istype(player.prefs.virtue_origin, /datum/virtue/origin/azuria) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/grenzelhoft) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/valorian))
+				var/list/new_origins = list("Azuria" = /datum/virtue/origin/azuria, 
+				"Grenzelhoft" = /datum/virtue/origin/grenzelhoft,
+				"Valoria" = /datum/virtue/origin/valorian)
+				var/new_origin
+				var/choice = input(player, "Your origins are not compatible with the Duchy. Where do you hail from?", "ANCESTRY") as anything in new_origins
+				if(choice)
+					new_origin = new_origins[choice]
+				else
+					to_chat(player, span_notice("No choice detected. Picking a random compatible origin."))
+					new_origin = pick(/datum/virtue/origin/grenzelhoft, /datum/virtue/origin/valorian, /datum/virtue/origin/azuria)
+				change_origin(H, new_origin, "Royal line")
 
 /datum/advclass/heir/daring
 	name = "Daring Twit"
@@ -91,13 +104,28 @@
 	shoes = /obj/item/clothing/shoes/roguetown/boots/nobleboot
 	saiga_shoes = /obj/item/clothing/shoes/roguetown/horseshoes/gold
 	belt = /obj/item/storage/belt/rogue/leather
-	l_hand = /obj/item/rogueweapon/sword/sabre
 	beltl = /obj/item/rogueweapon/scabbard/sword/royal
 	beltr = /obj/item/storage/keyring/heir
 	neck = /obj/item/storage/belt/rogue/pouch/coins/rich
 	backr = /obj/item/storage/backpack/rogue/satchel
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_RICH, H, "Savings.")
+
+/datum/outfit/job/roguetown/heir/daring/choose_loadout(mob/living/carbon/human/H)
+	. = ..()
+	var/weapons = list( // All decorated/gilded weapons, rich pompous ass that you are.
+	"Sabre",
+	"Rapier",
+	"Arming Sword"
+	)
+	var/weapon_choice = input(H, "Choose your weapon.", "ARMS TO INVITE ENVY") as anything in weapons
+	switch(weapon_choice)
+		if("Sabre")
+			H.put_in_hands(new /obj/item/rogueweapon/sword/sabre/dec)
+		if("Rapier")
+			H.put_in_hands(new /obj/item/rogueweapon/sword/rapier/dec)
+		if("Arming Sword")
+			H.put_in_hands(new /obj/item/rogueweapon/sword/decorated)
 
 /datum/advclass/heir/bookworm
 	name = "Introverted Bookworm"
@@ -140,6 +168,11 @@
 	neck = /obj/item/storage/belt/rogue/pouch/coins/rich
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_RICH, H, "Savings.")
+		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/heir_spell_bundle)
+	backpack_contents = list(
+		/obj/item/handmirror = 1
+	)
+		
 
  
 /datum/advclass/heir/aristocrat
@@ -190,6 +223,9 @@
 		shirt = /obj/item/clothing/suit/roguetown/shirt/dress/royal/princess
 		shoes = /obj/item/clothing/shoes/roguetown/shortboots
 	saiga_shoes = /obj/item/clothing/shoes/roguetown/horseshoes/gold
+	backpack_contents = list(
+		/obj/item/storage/belt/rogue/pouch/coins/rich = 1
+	)
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_RICH, H, "Savings.")
 
@@ -206,7 +242,7 @@
 		STATKEY_INT = -2,
 		STATKEY_CON = -2,
 		STATKEY_WIL = -2,
-		STATKEY_LCK = -2
+		STATKEY_LCK = 5
 	)
 	subclass_skills = list(
 		/datum/skill/misc/swimming = SKILL_LEVEL_APPRENTICE,

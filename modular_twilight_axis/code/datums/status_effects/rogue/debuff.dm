@@ -26,6 +26,48 @@
 /atom/movable/screen/alert/status_effect/debuff/nekoldun
 	name = "Psydon's Music"
 
+/* Kockout */
+/datum/status_effect/debuff/knockout
+	id = "knockout"
+	effectedstats = null
+	alert_type = null
+	duration = 12 SECONDS
+	var/time = 0
+
+/datum/status_effect/debuff/knockout/tick()
+	time += 1
+	switch(time)
+		if(3)
+			if(prob(50)) //You don't always know...
+				var/msg = pick("I feel sleepy...", "I feel relaxed.", "My eyes feel a little heavy.")
+				to_chat(owner, span_warn(msg))
+
+		if(5)
+			if(prob(50))
+				owner.Slowdown(20)
+			else
+				owner.Slowdown(10)
+		if(8)
+			if(iscarbon(owner))
+				var/mob/living/carbon/C = owner
+				var/msg = pick("yawn", "cough", "clearthroat")
+				C.emote(msg, forced = TRUE)
+		if(12)
+			// it's possible that stacking effects delay this.
+			// If we hit 12 regardless we end
+			Destroy()
+
+/datum/status_effect/debuff/knockout/on_remove()
+	if(iscarbon(owner))
+		var/mob/living/carbon/C = owner
+		if(C.IsSleeping()) //No need to add more it's already pretty long.
+			return ..()
+		C.SetSleeping(20 SECONDS)
+	..()
+
+/atom/movable/screen/alert/status_effect/debuff/knockout
+	name = "Drowsy"
+
 /datum/status_effect/debuff/vampiric_slowdown 
 	id = "vampiric_slowdown"
 	duration = 120 
@@ -156,3 +198,14 @@
 		owner.change_stat(STATKEY_SPD, -current_speed_penalty)
 		owner.remove_atom_colour(ADMIN_COLOUR_PRIORITY)
 		owner.update_move_intent_slowdown()
+
+/atom/movable/screen/alert/status_effect/shrink
+	name = "Shrink"
+	desc = "I'm tiny!"
+	icon_state = "debuff"
+
+/datum/status_effect/debuff/shrink
+	id = "shrink"
+	alert_type = /atom/movable/screen/alert/status_effect/shrink
+	effectedstats = list(STATKEY_SPD = -1, STATKEY_CON = -1)
+	duration = 2 MINUTES

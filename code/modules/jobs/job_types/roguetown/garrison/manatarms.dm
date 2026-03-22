@@ -31,11 +31,7 @@
 		/datum/advclass/manorguard/skirmisher,
 		/datum/advclass/manorguard/cavalry,
 		/datum/advclass/manorguard/bailiff,
-
-		/datum/advclass/manorguard/standard_bearer,
-
-		/datum/advclass/manorguard/twilight_grenadier
-
+		/datum/advclass/manorguard/standard_bearer
 	)
 
 /datum/outfit/job/roguetown/manorguard
@@ -218,7 +214,7 @@
 		H.set_blindness(0)
 		switch(weapon_choice)
 			if("Crossbow")
-				beltr = /obj/item/quiver/bolts
+				beltr = /obj/item/quiver/bolt/standard
 				backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
 			if("Bow") // They can head down to the armory to sideshift into one of the other bows.
 				beltr = /obj/item/quiver/arrows
@@ -312,7 +308,7 @@
 				l_hand = /obj/item/rogueweapon/sword/sabre
 				r_hand = /obj/item/rogueweapon/scabbard/sword
 				backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
-				beltr = /obj/item/quiver/bolts
+				beltr = /obj/item/quiver/bolt/standard
 			if("Flail & Shield")
 				beltr = /obj/item/rogueweapon/flail/sflail
 				backl = /obj/item/rogueweapon/shield/tower
@@ -507,6 +503,8 @@
 		if(.)
 			// gives them a rallying message, but doesn't reveal a location. gives antags some leeway
 			var/input_text = "<big><span style='color: [CLOTHING_WOAD_BLUE]'>THE DUCAL STANDARD CALLS FOR ALL GUARDSMEN TO RALLY AT [uppertext(get_area_name(user))]!</span></big>" // non-specific rallying call
+			if(SSmapping.config.map_name == "Rockhill")
+				input_text = "<big><span style='color: [CLOTHING_WOAD_BLUE]'>THE ROYAL STANDARD CALLS FOR ALL GUARDSMEN TO RALLY AT [uppertext(get_area_name(user))]!</span></big>" // non-specific rallying call
 			for(var/obj/item/scomstone/bad/garrison/S in SSroguemachine.scomm_machines)
 				S.repeat_message(input_text, src, CLOTHING_WOAD_BLUE)
 			for(var/obj/item/scomstone/garrison/S in SSroguemachine.scomm_machines)

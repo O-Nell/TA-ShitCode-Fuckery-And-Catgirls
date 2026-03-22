@@ -11,7 +11,7 @@
 	subclass_languages = list(/datum/language/otavan)
 	cmode_music = 'modular_twilight_axis/firearms/sound/music/combat_blackpowder.ogg'
 	category_tags = list(CTAG_ORTHODOXIST)
-	traits_applied = list(TRAIT_PSYDONITE)
+	traits_applied = list(TRAIT_PSYDONITE, TRAIT_ARTILLERY_EXPERT)
 	classes = list("Legionnaire" = "Soldier of the Last War. Bring your deadly weapon of blackpowder to the battlefield", 
 	"Otavan Volf" = "No matter who you were before. Now you are a bloodhound of Inquisition enchanted with rune magyck. \
 	No doors can stop you and no heretic can escape your silent bullet.")
@@ -53,7 +53,6 @@
 	gloves = /obj/item/clothing/gloves/roguetown/chain/psydon
 	mask = /obj/item/clothing/mask/rogue/facemask/steel/confessor
 	id = /obj/item/clothing/ring/signet/silver
-
 	var/classes = list("Legionnaire", "Otavan Volf")
 	var/classchoice = input(H, "Choose your archetypes", "Available archetypes") as anything in classes
 	
@@ -113,7 +112,7 @@
 						beltl = /obj/item/rogueweapon/scabbard/sheath
 						H.adjust_skillrank_up_to(/datum/skill/combat/knives, SKILL_LEVEL_EXPERT, TRUE)
 					if("Knuckledbusters")
-						r_hand = /obj/item/rogueweapon/knuckles/psydon
+						r_hand = /obj/item/clothing/gloves/roguetown/knuckles/psydon
 						H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, SKILL_LEVEL_EXPERT, TRUE)
 				armor = /obj/item/clothing/suit/roguetown/armor/leather/heavy/coat/confessor
 				l_hand = /obj/item/gun/ballistic/twilight_firearm/arquebus_pistol/umbra

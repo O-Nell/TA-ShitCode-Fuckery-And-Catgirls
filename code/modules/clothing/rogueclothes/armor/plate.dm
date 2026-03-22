@@ -116,7 +116,7 @@
 	update_description()
 
 /obj/item/clothing/suit/roguetown/armor/plate/paalloy/artificer/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/rogueweapon/hammer))
+	if(istype(I, /obj/item/contraption/linker))
 		if(user.get_skill_level(/datum/skill/craft/engineering) >= 3)
 			toggle_mode(user)
 			return
@@ -148,12 +148,12 @@
 				active_item = TRUE
 				legendaryarcane = FALSE
 				user.adjust_skillrank(/datum/skill/magic/arcane, 1, TRUE)
-				user.change_stat("intelligence", 3)
+				user.apply_status_effect(/datum/status_effect/buff/artificerint)
 				to_chat(user, span_notice("Arcyne lightning crackles across the cuirass, enchanting your mind with forbidden knowledge!"))
 				icon_state ="artificerplate_powered"
 				item_state = "artificerplate_powered"
 			else
-				user.change_stat("intelligence", 3)
+				user.apply_status_effect(/datum/status_effect/buff/artificerint)
 				legendaryarcane = TRUE
 				active_item = TRUE
 				to_chat(user, span_warning("Arcyne lightning crackles across the cuirass, enshrining your mastery over magicka!"))
@@ -175,8 +175,7 @@
 				legendaryathletics = TRUE
 			active_item = TRUE
 			to_chat(user, span_notice("Arcyne lightning crackles across the cuirass, enchanting your body with adrenalized power!"))
-			user.change_stat("strength", 2)
-			user.change_stat("endurance", 2)
+			user.apply_status_effect(/datum/status_effect/buff/artificerstr)
 			icon_state ="artificerplate_powered"
 			item_state = "artificerplate_powered"
 			return
@@ -193,7 +192,7 @@
 					H.adjust_skillrank(/datum/skill/magic/arcane, -1, TRUE)
 				if(H.get_item_by_slot(SLOT_ARMOR) == src)
 					to_chat(H, span_notice("Gone is the intelligence, which bolstered thine arcyna.."))
-					H.change_stat("intelligence", -3)
+					user.remove_status_effect(/datum/status_effect/buff/artificerint)
 					active_item = FALSE
 					return
 			else
@@ -205,8 +204,7 @@
 					H.adjust_skillrank(/datum/skill/misc/athletics, -1, TRUE)
 				if(H.get_item_by_slot(SLOT_ARMOR) == src)
 					to_chat(H, span_notice("Gone is the strength, which bolstered thine arms.."))
-					user.change_stat("strength", -2)
-					user.change_stat("endurance", -2)
+					user.remove_status_effect(/datum/status_effect/buff/artificerstr)
 					active_item = FALSE
 					return
 			else
@@ -253,6 +251,11 @@
 
 /obj/item/clothing/suit/roguetown/armor/plate/fluted/ornate/ComponentInitialize()
 	AddComponent(/datum/component/armour_filtering/positive, TRAIT_PSYDONIAN_GRIT, "ornate_plate")
+
+/obj/item/clothing/suit/roguetown/armor/plate/fluted/ornate/get_mechanics_examine(mob/user)
+	. = ..()
+	. += span_info("With more blessed silver and an armorsmith's hammer, this armor can be further upgraded.")
+	. += span_info("If a character has the 'Maille Training' trait and has Psydon as their selected patron, they can comfortably wear Psydonic plate armor without suffering any downsides.")
 
 // HEAVY
 /obj/item/clothing/suit/roguetown/armor/plate/full
@@ -336,6 +339,11 @@
 /obj/item/clothing/suit/roguetown/armor/plate/full/fluted/ornate/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/armour_filtering/positive, TRAIT_PSYDONIAN_GRIT, "ornate_plate")
+
+/obj/item/clothing/suit/roguetown/armor/plate/full/fluted/ornate/get_mechanics_examine(mob/user)
+	. = ..()
+	. += span_info("With more blessed silver and an armorsmith's hammer, this armor can be further upgraded.")
+	. += span_info("If a character has the 'Maille Training' trait and has Psydon as their selected patron, they can comfortably wear Psydonic plate armor without suffering any downsides.")
 
 /obj/item/clothing/suit/roguetown/armor/plate/fluted/shadowplate
 	name = "scourge breastplate"
@@ -591,6 +599,11 @@
 	desc = "A beautiful steel cuirass, fitted with tassets for additional coverage. Strips of blessed silver have been meticulously incorporated into the fluting; a laborous decoration that denotes it as originating from the Order of the Silver Psycross. </br>‎  </br>'..the feeling of Aeon's grasp upon your shoulders, imparting the world's burden unto flesh and bone..'"
 	smeltresult = /obj/item/ingot/silverblessed
 	smelt_bar_num = 1
+
+/obj/item/clothing/suit/roguetown/armor/plate/cuirass/fluted/ornate/get_mechanics_examine(mob/user)
+	. = ..()
+	. += span_info("With more blessed silver and an armorsmith's hammer, this armor can be further upgraded.")
+	. += span_info("If a character has the 'Maille Training' trait and has Psydon as their selected patron, they can comfortably wear Psydonic plate armor without suffering any downsides.")
 
 /obj/item/clothing/suit/roguetown/armor/plate/cuirass/iron
 	name = "iron breastplate"

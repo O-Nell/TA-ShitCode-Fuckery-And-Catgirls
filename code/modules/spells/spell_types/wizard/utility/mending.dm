@@ -2,7 +2,7 @@
 	name = "Mending"
 	desc = "Uses arcyne energy to mend an item. Effect of repair scales off of your Intelligence."
 	overlay_state = "mending"
-	releasedrain = 50
+	releasedrain = SPELLCOST_CANTRIP
 	chargetime = 5
 	recharge_time = 20 SECONDS
 	warnie = "spellwarning"
@@ -14,6 +14,7 @@
 	spell_tier = 1 // Utility. For repair
 	glow_color = GLOW_COLOR_ARCANE
 	glow_intensity = GLOW_INTENSITY_LOW
+	ignore_los = TRUE // temp. cus it breaks if it doesnt have this maybe
 
 	miracle = FALSE
 

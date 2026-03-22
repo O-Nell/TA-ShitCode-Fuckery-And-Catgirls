@@ -104,21 +104,31 @@
 	grid_width = 32
 	component_type = /datum/component/storage/concrete/roguetown/coin_pouch/merchant
 
-/obj/item/storage/belt/rogue/pouch/merchant/coins/Initialize() //Same as coins/rich
+/obj/item/storage/belt/rogue/pouch/merchant/coins/Initialize() //TA EDIT - Rockhill currency support
 	. = ..()
-	var/obj/item/roguecoin/silver/pile/H = new(loc)
-	if(istype(H))
-		if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
-			qdel(H)
-	H = new(loc)
-	if(istype(H))
-		if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
-			qdel(H)
-	if(prob(50))
+	if(SSmapping.config.map_name == "Rockhill")
+		var/obj/item/roguecoin/goldkrona/mid_pile/H = new(loc)
+		if(istype(H))
+			if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
+				qdel(H)
 		H = new(loc)
 		if(istype(H))
 			if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
 				qdel(H)
+	else
+		var/obj/item/roguecoin/silver/pile/H = new(loc)
+		if(istype(H))
+			if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
+				qdel(H)
+		H = new(loc)
+		if(istype(H))
+			if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
+				qdel(H)
+		if(prob(50))
+			H = new(loc)
+			if(istype(H))
+				if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
+					qdel(H)
 
 /obj/item/storage/belt/rogue/pouch/cloth
 	name = "cloth pouch"
@@ -217,6 +227,32 @@
 		if(istype(H))
 			if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
 				SSwardrobe.recycle_object(H)
+
+/obj/item/storage/belt/rogue/pouch/coins/aspirantpouch/get_types_to_preload()
+	var/list/to_preload = list() 
+	to_preload += /obj/item/roguecoin/gold/aspirantpile
+	return to_preload
+
+/obj/item/storage/belt/rogue/pouch/coins/aspirantpouch/PopulateContents()
+	. = ..()
+	var/obj/item/roguecoin/gold/aspirantpile/H = SSwardrobe.provide_type(/obj/item/roguecoin/gold/aspirantpile, loc)
+	if(istype(H))
+		if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
+			SSwardrobe.recycle_object(H)
+
+/obj/item/storage/belt/rogue/pouch/coins/bigandfat/get_types_to_preload()
+	var/list/to_preload = list() 
+	to_preload += /obj/item/roguecoin/gold/aspirantpile
+	return to_preload
+
+/obj/item/storage/belt/rogue/pouch/coins/bigandfat/PopulateContents()
+	. = ..()
+	for(var/i in 1 to 4)
+		var/obj/item/roguecoin/gold/aspirantpile/H = SSwardrobe.provide_type(/obj/item/roguecoin/gold/aspirantpile, loc)
+		if(istype(H))
+			if(!SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, H, null, TRUE, TRUE))
+				SSwardrobe.recycle_object(H)
+				break
 
 /obj/item/storage/belt/rogue/pouch/coins/virtuepouch/get_types_to_preload()
 	var/list/to_preload = list() 

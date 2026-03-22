@@ -11,12 +11,13 @@
 	sellprice = 25
 
 /datum/advclass/wretch/twilight_corsair
-	name = "Sea Rogue"
-	tutorial = "You spent your entire lyfe making a living through piracy in the seas of Grimoria, where gunpowder and steel were always your loyal companions."
+	name = "Corsair"
+	tutorial = "During the Twilight War, you served aboard a Reichsmarine warship, intercepting, boarding and ravaging Golden Empire's trade vessels on Kaiser's orders. After the war ended, your crew saw it fit to continue with the practice, flying a flag with a different shade of black."
 	allowed_sexes = list(MALE, FEMALE)
 	allowed_races = RACES_ALL_KINDS
 	outfit = /datum/outfit/job/roguetown/wretch/twilight_corsair
 	category_tags = list(CTAG_WRETCH)
+	class_select_category = CLASS_CAT_RANGER
 	traits_applied = list(TRAIT_FIREARMS_MARKSMAN, TRAIT_DODGEEXPERT)
 	maximum_possible_slots = 2
 	classes = list("Kaper" = "During the Twilight War, you served aboard a Reichsmarine warship, intercepting, \

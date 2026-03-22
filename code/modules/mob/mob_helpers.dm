@@ -510,6 +510,8 @@
 		hud_used.action_intent.switch_intent(r_index,l_index,oactive)
 
 /mob/proc/update_a_intents()
+	if(QDELETED(src))
+		return
 	stop_attack()
 	QDEL_LIST(possible_a_intents)
 	QDEL_LIST(possible_offhand_intents)
@@ -596,6 +598,7 @@
 				input = null
 				mmb_intent = null
 			else
+				qdel(mmb_intent)
 				mmb_intent = new INTENT_KICK(src)
 		if(QINTENT_SPECIAL)
 			if(mmb_intent?.type == INTENT_SPECIAL)
@@ -603,6 +606,7 @@
 				input = null
 				mmb_intent = null
 			else
+				qdel(mmb_intent)
 				mmb_intent = new INTENT_SPECIAL(src)
 		if(QINTENT_BITE)
 			if(mmb_intent?.type == INTENT_BITE)
@@ -610,6 +614,7 @@
 				input = null
 				mmb_intent = null
 			else
+				qdel(mmb_intent)
 				mmb_intent = new INTENT_BITE(src)
 		if(QINTENT_JUMP)
 			if(mmb_intent?.type == INTENT_JUMP)
@@ -617,6 +622,7 @@
 				input = null
 				mmb_intent = null
 			else
+				qdel(mmb_intent)
 				mmb_intent = new INTENT_JUMP(src)
 		if(QINTENT_GIVE)
 			if(mmb_intent?.type == INTENT_GIVE)
@@ -624,13 +630,13 @@
 				input = null
 				mmb_intent = null
 			else
+				qdel(mmb_intent)
 				mmb_intent = new INTENT_GIVE(src)
 		if(QINTENT_SPELL)
 			if(mmb_intent)
 				qdel(mmb_intent)
 
 			mmb_intent = new INTENT_SPELL(src)
-			mmb_intent.releasedrain = ranged_ability.get_fatigue_drain()
 			mmb_intent.chargedrain = ranged_ability.chargedrain
 			mmb_intent.chargetime = ranged_ability.get_chargetime()
 			mmb_intent.warnie = ranged_ability.warnie
@@ -996,7 +1002,10 @@
 		return
 
 	// Cannot use the list as a map if the key is a number, so we stringify it (thank you BYOND)
-	var/smessage_type = num2text(message_type)
+	// Use string interpolation instead of num2text to avoid scientific notation for large numbers.
+	// num2text(1048576) produces "1.04858e+06" which text2num() parses as 1048580,
+	// causing LOG_NPC_SAY (1<<20 = 1048576) to be stored incorrectly and match against wrong filters.
+	var/smessage_type = "[message_type]"
 
 	if(client)
 		if(!islist(client.player_details.logging[smessage_type]))

@@ -9,11 +9,11 @@
 /mob/var/next_move_adjust = 0 //Amount to adjust action/click delays by, + or -
 /mob/var/next_move_modifier = 1 //Value to multiply action/click delays by
 
-// CanReach caching
-/mob/var/atom/last_reach_target
+// CanReach caching - weakrefs to prevent hard deletes from stale cache entries
+/mob/var/datum/weakref/last_reach_target
 /mob/var/last_reach_result
 /mob/var/last_reach_time
-/mob/var/obj/item/last_reach_tool
+/mob/var/datum/weakref/last_reach_tool
 
 //Delays the mob's next click/action by num deciseconds
 // eg: 10-3 = 7 deciseconds of delay
@@ -246,7 +246,10 @@
 				var/turf/target_turf = get_turf(A)
 				if(get_dist(my_turf, target_turf) <= used_intent.reach)
 					if(!used_intent.noaa)
-						do_attack_animation(target_turf, used_intent.animname, W, used_intent = src.used_intent)
+						if(used_intent.cleave)
+							used_intent.cleave.show_cleave_visuals(src, target_turf)
+						else
+							do_attack_animation(target_turf, used_intent.animname, W, used_intent = src.used_intent)
 				resolveAdjacentClick(A,W,params)
 				return
 
@@ -304,7 +307,10 @@
 						break
 					if(target)
 						if(target.Adjacent(src) || (CanReach(target, W) && used_intent.effective_range_type))
-							do_attack_animation(T, used_intent.animname, used_intent.masteritem, used_intent = src.used_intent)
+							if(used_intent.cleave)
+								used_intent.cleave.show_cleave_visuals(src, T)
+							else
+								do_attack_animation(T, used_intent.animname, used_intent.masteritem, used_intent = src.used_intent)
 							resolveAdjacentClick(target,W,params,used_hand)
 							atkswinging = null
 							//update_warning()
@@ -314,7 +320,10 @@
 					if(!used_intent.noaa)
 						changeNext_move(CLICK_CD_RAPID)
 						if(get_dist(my_turf, T) <= used_intent.reach)
-							do_attack_animation(T, used_intent.animname, used_intent.masteritem, used_intent = src.used_intent)
+							if(used_intent.cleave)
+								used_intent.cleave.show_cleave_visuals(src, T)
+							else
+								do_attack_animation(T, used_intent.animname, used_intent.masteritem, used_intent = src.used_intent)
 						var/adf = used_intent.clickcd
 						if(istype(rmb_intent, /datum/rmb_intent/aimed))
 							adf = round(adf * CLICK_CD_MOD_AIMED)
@@ -371,7 +380,7 @@
 					var/forceoffhand = L.dualwieldpitystacks >= L.dualwieldpitythreshhold
 					if(forceoffhand)
 						L.dualwieldpitystacks = 0
-						if(L.stamina_add(2))
+						if(L.stamina_add(3))
 							L.last_used_double_attack = world.time + 2.5 SECONDS
 							to_chat(L, span_warning("An opening! I strike with my off-hand."))
 							offh.melee_attack_chain(src, A, params)
@@ -437,7 +446,7 @@
 /atom/movable/proc/CanReach(atom/ultimate_target, obj/item/tool, view_only = FALSE)
 	if(ismob(src))
 		var/mob/M = src
-		if(M.last_reach_target == ultimate_target && M.last_reach_time == world.time && M.last_reach_tool == tool)
+		if(M.last_reach_target?.resolve() == ultimate_target && M.last_reach_time == world.time && M.last_reach_tool?.resolve() == tool)
 			return M.last_reach_result
 
 	// A backwards depth-limited breadth-first-search to see if the target is
@@ -465,10 +474,10 @@
 				if(Adjacent(target) || ( (tool || (!iscarbon(src) && usedreach >= 2)) && CheckToolReach(src, target, usedreach))) //Adjacent or reaching attacks
 					if(ismob(src))
 						var/mob/M = src
-						M.last_reach_target = ultimate_target
+						M.last_reach_target = WEAKREF(ultimate_target)
 						M.last_reach_result = TRUE
 						M.last_reach_time = world.time
-						M.last_reach_tool = tool
+						M.last_reach_tool = WEAKREF(tool)
 					return TRUE
 
 			if (!target.loc)
@@ -481,10 +490,10 @@
 
 	if(ismob(src))
 		var/mob/M = src
-		M.last_reach_target = ultimate_target
+		M.last_reach_target = WEAKREF(ultimate_target)
 		M.last_reach_result = FALSE
 		M.last_reach_time = world.time
-		M.last_reach_tool = tool
+		M.last_reach_tool = WEAKREF(tool)
 	return FALSE
 
 /atom/movable/proc/IsDirectlyAccessible(atom/target)

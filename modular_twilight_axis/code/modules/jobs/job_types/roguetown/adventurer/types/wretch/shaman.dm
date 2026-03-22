@@ -3,6 +3,7 @@
 	tutorial = "You are a Shaman of the Fjall, The Northern Empty. Your rituals call elder spirits and Gods through violence and ordinances which was forbidden even by your brothers"
 	outfit = /datum/outfit/job/roguetown/wretch/rogueshaman
 	category_tags = list(CTAG_WRETCH)
+	class_select_category = CLASS_CAT_CLERIC
 	maximum_possible_slots = 2
 	subclass_languages = list(/datum/language/gronnic)
 	cmode_music = 'modular_twilight_axis/sound/music/combat_hakkerskaldyr.ogg'
@@ -64,7 +65,7 @@
 			id = /obj/item/clothing/neck/roguetown/psicross/inhumen/gronn/special 
 
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)
-	C.grant_miracles(H, cleric_tier = CLERIC_T2, passive_gain = CLERIC_REGEN_DEVOTEE, devotion_limit = CLERIC_REQ_1)
+	C.grant_miracles(H, cleric_tier = CLERIC_T2, passive_gain = CLERIC_REGEN_WEAK, devotion_limit = CLERIC_REQ_1)
 	backpack_contents = list(
 		/obj/item/rogueweapon/scabbard/sheath = 1,
 		/obj/item/rogueweapon/huntingknife/stoneknife = 1

@@ -6,6 +6,9 @@
 		return
 	var/mob/living/carbon/human/H = user
 	if(!IU)	//The opponent is trying to rawdog us with their bare hands while we have Guard up. We get a free attack on their active hand.
+		if(!IM)	//We are also unarmed -- no clash or riposte without a weapon on the guarder's side.
+			remove_status_effect(/datum/status_effect/buff/clash)
+			return
 		var/obj/item/bodypart/affecting = H.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
 		var/force = get_complex_damage(IM, src)
 		var/armor_block = H.run_armor_check(BODY_ZONE_PRECISE_L_HAND, used_intent.item_d_type, armor_penetration = used_intent.penfactor, damage = force, used_weapon = IM)
@@ -17,16 +20,25 @@
 		playsound(src, pick(used_intent.hitsound), 80)
 		remove_status_effect(/datum/status_effect/buff/clash)
 		return
+	if(!IM)	//We are guarding unarmed but they have a weapon -- no clash, just consume the guard to block the hit.
+		visible_message(span_warning("[src] deflects [H]'s strike with [p_their()] bare hands!"))
+		playsound(src, 'sound/combat/clash_struck.ogg', 100)
+		H.apply_status_effect(/datum/status_effect/debuff/exposed, 3 SECONDS)
+		H.apply_status_effect(/datum/status_effect/debuff/clickcd, 3 SECONDS)
+		H.Slowdown(3)
+		to_chat(src, span_notice("[capitalize(H.p_theyre())] exposed!"))
+		remove_status_effect(/datum/status_effect/buff/clash)
+		return
 	if(H.has_status_effect(/datum/status_effect/buff/clash))	//They also have Riposte active. It'll trigger the special event.
 		clash(user, IM, IU)
 	else	//Otherwise, we just riposte them.
-		var/sharpnesspenalty = 0.15
+		var/sharpnesspenalty = RIPOSTE_SHARPNESS_FACTOR
 		if(IM.wbalance == WBALANCE_HEAVY || IU.blade_dulling == DULLING_SHAFT_CONJURED)
 			sharpnesspenalty += 0.05
 		if(IU.max_blade_int)
 			IU.remove_bintegrity((IU.blade_int * sharpnesspenalty), user)
 		else
-			var/integdam = max((IU.max_integrity / 5), (INTEG_PARRY_DECAY_NOSHARP * 5))
+			var/integdam = max((IU.max_integrity / RIPOSTE_INTEG_DIVISOR), (INTEG_PARRY_DECAY_NOSHARP * 5))
 			if(IU.blade_dulling == DULLING_SHAFT_CONJURED)
 				integdam *= 2
 			IU.take_damage(integdam, BRUTE, IM.d_type)
@@ -156,6 +168,27 @@
 	var/target_turf = get_ranged_target_turf(current_turf, turndir, dist)
 	throw_item(target_turf, FALSE)
 	apply_status_effect(/datum/status_effect/debuff/clickcd, 3 SECONDS)
+
+/mob/living/carbon/human/proc/try_guard()
+	if(has_status_effect(/datum/status_effect/buff/clash) || has_status_effect(/datum/status_effect/debuff/clashcd) || has_status_effect(/datum/status_effect/buff/clash/limbguard))
+		return FALSE
+	if(!get_active_held_item())
+		if(get_skill_level(/datum/skill/combat/unarmed) < 3)
+			to_chat(src, span_warning("I'm not skilled enough in the art of unarmed combat to guard without a weapon!"))
+			return FALSE
+	if(r_grab || l_grab || length(grabbedby))
+		return FALSE
+	if(IsImmobilized() || IsOffBalanced())
+		return FALSE
+	if(m_intent == MOVE_INTENT_RUN)
+		to_chat(src, span_warning("I can't focus on this while running."))
+		return FALSE
+	if(magearmor == 0 && HAS_TRAIT(src, TRAIT_MAGEARMOR))
+		magearmor = 1
+		apply_status_effect(/datum/status_effect/buff/magearmor)
+		to_chat(src, span_warning("I drop my Mage Armor to protect myself!"))
+	apply_status_effect(/datum/status_effect/buff/clash)
+	return TRUE
 
 ///Proc that cancels Riposte with a small stamina penalty, unless it's an extreme case.
 /mob/living/carbon/human/proc/bad_guard(msg, cheesy = FALSE, custom_value)

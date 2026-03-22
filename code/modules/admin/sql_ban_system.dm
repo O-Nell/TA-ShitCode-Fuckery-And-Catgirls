@@ -238,6 +238,8 @@
 							"Courtiers" = GLOB.courtier_positions,
 							"Retinue" = GLOB.retinue_positions,
 							"Garrison" = GLOB.garrison_positions,
+							"City Watch" = GLOB.citywatch_positions,
+							"Vanguard" = GLOB.vanguard_positions,
 							"Church" = GLOB.church_positions,
               "Inquisition" = GLOB.inquisition_positions,
 							"Wanderers" = GLOB.wanderer_positions,
@@ -698,7 +700,8 @@
 	qdel(query_unban)
 	log_admin_private("[kn] has unbanned [target] from [role].")
 	message_admins("[kna] has unbanned [target] from [role].")
-	world.TgsAnnounceUnban(target, admin_key, role)
+	var/current_admin = usr.ckey
+	world.TgsAnnounceUnban(target, current_admin, role)
 	var/client/C = GLOB.directory[player_key]
 	if(C)
 		build_ban_cache(C)
