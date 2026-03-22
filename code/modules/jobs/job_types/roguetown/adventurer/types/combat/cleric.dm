@@ -40,9 +40,10 @@
 	..()
 
 	// Add druidic skill for Dendor followers
-	if(istype(H.patron, /datum/patron/divine/dendor))
-		H.adjust_skillrank(/datum/skill/magic/druidic, 3, TRUE)
-		to_chat(H, span_notice("As a follower of Dendor, you have innate knowledge of druidic magic."))
+	// if(istype(H.patron, /datum/patron/divine/dendor))
+	//	H.adjust_skillrank(/datum/skill/magic/druidic, 3, TRUE)
+	//	to_chat(H, span_notice("As a follower of Dendor, you have innate knowledge of druidic magic."))
+	// my boy, it has no use for now.
 
 	to_chat(H, span_warning("You are a wandering acolyte, versed in both miracles and martial arts. You forego the hauberk that paladins wear in favor of humbling your foes through bloodless strikes. Your satchel hangs heavy, too, with ample provisions for the pilgrimage you're upon."))
 	head = /obj/item/clothing/head/roguetown/headband/monk
@@ -167,11 +168,13 @@
 	name = "Paladin"
 	tutorial = "You are a holy knight, clad in maille and armed with steel. Where others of the clergy may have spent their free time studying scriptures, you devoted yourself towards fighting Psydonia's evils - a longsword in one hand, and a clenched psycross in the other."
 	outfit = /datum/outfit/job/roguetown/adventurer/paladin
-	traits_applied = list(TRAIT_MEDIUMARMOR)
+	traits_applied = list(TRAIT_MEDIUMARMOR, TRAIT_STEELHEARTED) //makes sense since you're fighting evil
 	subclass_stats = list(
-		STATKEY_STR = 2,
+		STATKEY_STR = 1,
 		STATKEY_CON = 2,
 		STATKEY_WIL = 1,
+		STATKEY_PER = 1,
+		STATKEY_INT = 1,
 	)
 	subclass_skills = list(
 		/datum/skill/combat/shields = SKILL_LEVEL_JOURNEYMAN,
@@ -192,7 +195,7 @@
 		"The Verses and Acts of the Ten" = /obj/item/book/rogue/bibble,
 		"Tome of Psydon" = /obj/item/book/rogue/bibble/psy
 	)
-	extra_context = "This subclass can choose to take one of two holy items to take along: a potion of lifeblood and Novice skills in Medicine, or a silver longsword that gives Journeyman skills in Swordsmanship."
+	extra_context = "This subclass can choose to take one of two holy items to take along: a potion of lifeblood, a needle and Apprentice skills in Medicine, or a silver longsword that gives Journeyman skills in Swordsmanship. Or it can choose none and get a silver ring."
 
 /datum/outfit/job/roguetown/adventurer/paladin/pre_equip(mob/living/carbon/human/H)
 	// This list exists here so it can be overwritten later.
@@ -317,6 +320,8 @@
 			if("Whip")
 				H.adjust_skillrank_up_to(/datum/skill/combat/whipsflails, SKILL_LEVEL_JOURNEYMAN, TRUE)
 				beltr = /obj/item/rogueweapon/whip
+				H.change_stat(STATKEY_CON, -1) //trade off for accuracy
+				H.change_stat(STATKEY_PER, 1) //more accuracy
 			if("Spear")
 				H.adjust_skillrank_up_to(/datum/skill/combat/polearms, SKILL_LEVEL_JOURNEYMAN, TRUE)
 				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
@@ -550,7 +555,7 @@
 		/datum/skill/combat/polearms = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/combat/staves = SKILL_LEVEL_APPRENTICE, //If a potential staff-polearm user is at Apprentice-level or below, it's fine to match both combat skills.
 		/datum/skill/magic/holy = SKILL_LEVEL_EXPERT,
-		/datum/skill/combat/wrestling = SKILL_LEVEL_NOVICE,
+		/datum/skill/combat/wrestling = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/combat/unarmed = SKILL_LEVEL_NOVICE,
 		/datum/skill/misc/swimming = SKILL_LEVEL_NOVICE,
 		/datum/skill/misc/climbing = SKILL_LEVEL_APPRENTICE,
@@ -562,7 +567,7 @@
 		"The Verses and Acts of the Ten" = /obj/item/book/rogue/bibble,
 		"Tome of Psydon" = /obj/item/book/rogue/bibble/psy
 	)
-	extra_context = "This subclass regenerates Devotion slower, but has access to higher tier miracles."
+	extra_context = "This subclass regenerates Devotion slower, but has access to higher tier miracles. Depending on patron, this subclass recieves different bonuses to its skills"
 
 /datum/outfit/job/roguetown/adventurer/missionary/pre_equip(mob/living/carbon/human/H)
 	to_chat(H, span_warning("You are a devout worshipper of the divine with a strong connection to your patron god. You've spent years studying scriptures and serving your deity - now you wander into foreign lands, spreading the word of your faith."))
@@ -583,16 +588,24 @@
 		if(/datum/patron/old_god)
 			cloak = /obj/item/clothing/cloak/tabard/psydontabard
 			head = /obj/item/clothing/head/roguetown/roguehood/psydon
+		if(/datum/patron/divine/ravox)
+			cloak = /obj/item/clothing/cloak/templar/ravox
+			head = /obj/item/clothing/head/roguetown/roguehood
+			H.adjust_skillrank(/datum/skill/misc/athletics, 1, TRUE) // a little bonus for battle-hungry devotees
 		if(/datum/patron/divine/astrata)
 			head = /obj/item/clothing/head/roguetown/roguehood/astrata
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/astrata
 		if(/datum/patron/divine/noc)
 			head =  /obj/item/clothing/head/roguetown/roguehood/nochood
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/noc
+			mask = /obj/item/clothing/mask/rogue/owlmask
+			H.adjust_skillrank(/datum/skill/craft/alchemy, SKILL_LEVEL_NOVICE, TRUE) // you already have expert in reading, so.. i will not force reading skill further
 		if(/datum/patron/divine/abyssor)
 			head = /obj/item/clothing/head/roguetown/roguehood/abyssor
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/abyssor
 			H.adjust_skillrank(/datum/skill/misc/swimming, SKILL_LEVEL_APPRENTICE, TRUE) //I mean, god of seas has not forgotten his devotee followers
+			H.adjust_skillrank(/datum/skill/craft/cooking, SKILL_LEVEL_NOVICE, TRUE)
+			H.adjust_skillrank(/datum/skill/labor/fishing, SKILL_LEVEL_NOVICE, TRUE)
 		if(/datum/patron/divine/dendor)
 			head = /obj/item/clothing/head/roguetown/dendormask
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/dendor
@@ -607,8 +620,12 @@
 			head = /obj/item/clothing/head/roguetown/necrahood
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/necra
 		if (/datum/patron/divine/malum)
-			head = /obj/item/clothing/head/roguetown/roguehood //placeholder
+			head = /obj/item/clothing/head/roguetown/roguehood
 			cloak = /obj/item/clothing/cloak/templar/malumite
+			H.adjust_skillrank(/datum/skill/craft/blacksmithing, SKILL_LEVEL_NOVICE, TRUE)
+			H.adjust_skillrank(/datum/skill/craft/armorsmithing, SKILL_LEVEL_NOVICE, TRUE)
+			H.adjust_skillrank(/datum/skill/craft/weaponsmithing, SKILL_LEVEL_NOVICE, TRUE)
+			H.adjust_skillrank(/datum/skill/craft/smelting, SKILL_LEVEL_NOVICE, TRUE) // something useful for malumites. maybe they'll be helping blacksmith. get smithing related virtue for uncaps
 		if (/datum/patron/divine/eora)
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/eora
 			head = /obj/item/clothing/head/roguetown/eoramask
@@ -618,6 +635,13 @@
 			ADD_TRAIT(H, TRAIT_GOODLOVER, TRAIT_GENERIC)
 		if (/datum/patron/divine/xylix)
 			cloak = /obj/item/clothing/cloak/templar/xylix
+			H.adjust_skillrank(/datum/skill/misc/music, SKILL_LEVEL_NOVICE, TRUE)
+			H.adjust_skillrank(/datum/skill/misc/lockpicking, SKILL_LEVEL_NOVICE, TRUE) // uhh, tricks, mockery and music. suits them well
+		if (/datum/patron/divine/pestra)
+			cloak = /obj/item/clothing/cloak/templar/pestran
+			head = /obj/item/clothing/head/roguetown/roguehood
+			H.adjust_skillrank(/datum/skill/craft/alchemy, SKILL_LEVEL_NOVICE, TRUE) // you still can level up medicine like it was nothing to expert
+			beltl = /obj/item/storage/belt/rogue/pouch/medicine
 		if(/datum/patron/inhumen/zizo)
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe 
 			head = /obj/item/clothing/head/roguetown/roguehood
@@ -633,7 +657,10 @@
 		var/weapon_choice = input(H, "Choose your weapon.", "TAKE UP ARMS") as anything in weapons
 		switch(weapon_choice)
 			if("Iron Spear")
-				r_hand = /obj/item/rogueweapon/spear
+				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
+					r_hand = /obj/item/rogueweapon/spear/psyspear/old
+				else
+					r_hand = /obj/item/rogueweapon/spear
 				l_hand = /obj/item/rogueweapon/scabbard/gwstrap
 			if("Iron Quarterstaff")
 				r_hand = /obj/item/rogueweapon/woodstaff/quarterstaff/iron
