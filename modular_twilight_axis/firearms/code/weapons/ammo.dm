@@ -97,7 +97,7 @@
 	hitsound = 'sound/combat/hits/hi_bolt (2).ogg'
 	embedchance = 100
 	woundclass = BCLASS_PIERCE
-	flag = "piercing"
+	flag = "stab"
 	armor_penetration = PEN_HEAVY
 
 /obj/projectile/bullet/twilight_lead/twilight_runelock/blessed
