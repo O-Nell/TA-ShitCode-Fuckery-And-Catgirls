@@ -3551,6 +3551,7 @@
 #include "modular_twilight_axis\firearms\code\jobs\afreet.dm"
 #include "modular_twilight_axis\firearms\code\jobs\blackpowder_hunter.dm"
 #include "modular_twilight_axis\firearms\code\jobs\corsair.dm"
+#include "modular_twilight_axis\code\modules\jobs\job_types\roguetown\burghers\ta_physicians.dm"
 #include "modular_twilight_axis\firearms\code\jobs\guildmaster.dm"
 #include "modular_twilight_axis\firearms\code\jobs\guildsman.dm"
 #include "modular_twilight_axis\firearms\code\jobs\gunslinger.dm"
