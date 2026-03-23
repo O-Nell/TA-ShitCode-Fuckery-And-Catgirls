@@ -321,6 +321,7 @@
 	item_state = "headscarf"
 	icon = 'modular_twilight_axis/icons/clothing/kazengun_n_burger.dmi'
 	mob_overlay_icon = 'modular_twilight_axis/icons/clothing/onmob/kazengun_n_burger.dmi'
+	salvage_result = /obj/item/natural/silk
 
 /datum/crafting_recipe/roguetown/sewing/hscarf
 	name = "head scarf"
