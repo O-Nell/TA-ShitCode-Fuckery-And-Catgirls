@@ -3555,6 +3555,7 @@
 #include "modular_twilight_axis\firearms\code\jobs\guildmaster.dm"
 #include "modular_twilight_axis\firearms\code\jobs\guildsman.dm"
 #include "modular_twilight_axis\firearms\code\jobs\gunslinger.dm"
+#include "modular_twilight_axis\firearms\code\jobs\conquistador.dm"
 #include "modular_twilight_axis\firearms\code\jobs\inquisitor.dm"
 #include "modular_twilight_axis\firearms\code\jobs\lord.dm"
 #include "modular_twilight_axis\firearms\code\jobs\manatarms_grenadier.dm"
