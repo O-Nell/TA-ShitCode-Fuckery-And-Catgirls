@@ -1424,30 +1424,30 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_eiren
 	name = "Donator Kit - Regret - Required: Any Zweihander"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eiren
+	path = /obj/item/enchantingkit/weapon/eiren
 	donatitem = TRUE
 
 /datum/loadout_item/donator_eiren2
 	name = "Donator Kit - Lunae - Required: Sabre"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eirensabre
+	path = /obj/item/enchantingkit/weapon/eirensabre
 	donatitem = TRUE
 
 /datum/loadout_item/donator_eiren3
 	name = "Donator Kit - Cinis - Required: Sabre"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eirensabre2
+	path = /obj/item/enchantingkit/weapon/eirensabre2
 	donatitem = TRUE
 
 /datum/loadout_item/donator_waff
 	name = "Donator Kit - Weeper Lathe - Required: Greatsword"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/waff
+	path = /obj/item/enchantingkit/weapon/waff
 	donatitem = TRUE
 
 /datum/loadout_item/donator_inverserun
 	name = "Donator Kit - Votive Thorns - Required: Any Zweihander"
-	path = /obj/item/enchantingkit/inverserun
+	path = /obj/item/enchantingkit/weapon/inverserun
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
@@ -1538,7 +1538,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donat_weaponkitrock
 	name = "Donator Kit - 'Rockhillian Longsword' - Required: Broadsword or Executioner Sword"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/triumph_weaponkit_rock
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_rock
 	donatitem = TRUE
 
 /datum/loadout_item/donat_weaponkitsabre
@@ -1563,6 +1563,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Donator Item - Western Estates Caparison"
 	path = /obj/item/caparison/ryan
 	category = list("Разное", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_drow_armorkit
+	name = "Donator Item - Drowcraft Armor - Required: Hardened Leather Armor Or Studded Leather Armor"
+	path = /obj/item/enchantingkit/triumph_armorkit_drow
+	category = list("Броня", "Донат")
 	donatitem = TRUE
 
 /datum/loadout_item/donator_ryan/psy_helm
@@ -1616,7 +1622,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_stinketh_shashka
 	name = "Donator Kit - Fencer's Shashka - Required: Szöréndnížine Sabre Or Aavnic Shashka"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/stinketh_shashka
+	path = /obj/item/enchantingkit/weapon/stinketh_shashka
 	donatitem = TRUE
 
 /datum/loadout_item/donator_stinketh_pike

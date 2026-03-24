@@ -202,7 +202,7 @@
 		/obj/item/rogueweapon/greatsword
 	)
 	result_item = /obj/item/rogueweapon/example/eiren_greatsword
-	icon_loadout = /obj/item/rogueweapon/greatsword/eiren
+	icon_loadout = /obj/item/rogueweapon/example/eiren_greatsword
 
 /obj/item/enchantingkit/weapon/eirensabre
 	name = "'Lunae' morphing elixir"
@@ -215,7 +215,6 @@
 	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Sabre"
 	target_items = list(/obj/item/rogueweapon/sword/sabre)
 	result_item = /obj/item/rogueweapon/example/eiren_sabre_alt
-	icon_loadout = /obj/item/rogueweapon/sword/sabre/eiren/small
 
 //pretzel - custom steel greatsword. PSYDON LYVES. PSYDON ENDVRES.
 /obj/item/enchantingkit/weapon/waff
@@ -223,7 +222,6 @@
 	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Greatsword"
 	target_items = list(/obj/item/rogueweapon/greatsword)		// i, uh. i really do promise i'm only gonna use it on steel greatswords.
 	result_item = /obj/item/rogueweapon/example/waffai_greatsword
-	icon_loadout = /obj/item/rogueweapon/greatsword/weeperslathe
 
 //inverserun claymore
 /obj/item/enchantingkit/weapon/inverserun
@@ -303,7 +301,6 @@
 		/obj/item/rogueweapon/sword/sabre/steppesman
 	)
 	result_item = /obj/item/rogueweapon/example/stinketh_sabre
-	icon_loadout = /obj/item/rogueweapon/sword/sabre/steppesman/stinketh
 
 /obj/item/enchantingkit/stinketh_pike
 	name = "'Kindness of Ravens Standard' morphing elixir"
