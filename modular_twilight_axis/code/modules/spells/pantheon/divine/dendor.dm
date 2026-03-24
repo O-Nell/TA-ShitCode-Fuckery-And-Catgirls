@@ -229,7 +229,7 @@
 	range = -1
 	overlay_state = "blesscrop"
 	releasedrain = 30
-	recharge_time = 15 MINUTES
+	recharge_time = 5 MINUTES
 	req_items = /obj/item/clothing/neck/roguetown/psicross/dendor
 	cast_without_targets = TRUE
 	sound = 'sound/magic/churn.ogg'
