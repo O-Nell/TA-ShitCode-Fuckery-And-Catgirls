@@ -2016,7 +2016,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/cloak_etrusco
-	name = "Этрусский плащ"
+	name = "Этруский плащ"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/duelcape
 	donatitem = TRUE
@@ -2157,7 +2157,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/etrusca_hat
-	name = "Этрусская шляпа"
+	name = "Этруская шляпа"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/duelhat/etrusca
 	donatitem = TRUE
