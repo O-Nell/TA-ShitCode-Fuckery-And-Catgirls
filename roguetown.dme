@@ -1232,6 +1232,7 @@
 #include "code\game\objects\items\rogueitems\ropechainbola\chain.dm"
 #include "code\game\objects\items\rogueitems\ropechainbola\net.dm"
 #include "code\game\objects\items\rogueitems\ropechainbola\rope.dm"
+#include "code\game\objects\items\rogueweapons\enchanting_examples.dm"
 #include "code\game\objects\items\rogueweapons\integrity.dm"
 #include "code\game\objects\items\rogueweapons\intent_alert.dm"
 #include "code\game\objects\items\rogueweapons\intents.dm"
