@@ -142,7 +142,6 @@
 	var/list/nsfw_img_gallery = list()
 	
 
-	var/nsfw_headshot_link = null //TA edit
 
 	var/has_confessed = FALSE // Used to track if they have confessed it was written onto a confession paper
 

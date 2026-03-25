@@ -1655,6 +1655,30 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
+/datum/loadout_item/donator_weaponkitwodao
+	name = "Donator Kit - Wodao - Required: Sabre"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_wodao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitdadao
+	name = "Donator Kit - Dadao - Required: Iron Hunting Sword, Iron Dueling Messer, Steel Messer, Steel Hunting Sword Or Falx"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_dadao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitgdadao
+	name = "Donator Kit - Greatdadao- Required: Kriegmesser or Rhomphaia"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_gdadao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitgdadao
+	name = "Donator Kit - Avantyne-Threaded Sword - Required: Longsword"
+	path = /obj/item/enchantingkit/dakken_alloybsword
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
 // Разное
 /datum/loadout_item/donat
 	name = "Музыкальная коробка"
