@@ -141,7 +141,7 @@
 		/datum/language/hellspeak,
 	)
 
-	restricted_virtues = list(/datum/virtue/utility/noble, /datum/virtue/utility/deathless)
+	restricted_virtues = list(/datum/virtue/utility/noble, /datum/virtue/utility/deathless, /datum/virtue/combat/rotcured)
 
 	stress_examine = TRUE
 	stress_desc = span_red("Accursed. I should keep my distance...")
