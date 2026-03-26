@@ -6,7 +6,7 @@
 	total_positions = 2
 	spawn_positions = 2
 
-	allowed_races = ACCEPTED_RACES
+	allowed_races = RACES_ALL_KINDS
 
 	tutorial = "You are a fully trained and accomplished physician, well-practiced \
 	in the arts of medicine and alchemy. You are quartered within the University of \
