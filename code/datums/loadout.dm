@@ -1424,30 +1424,30 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_eiren
 	name = "Donator Kit - Regret - Required: Any Zweihander"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eiren
+	path = /obj/item/enchantingkit/weapon/eiren
 	donatitem = TRUE
 
 /datum/loadout_item/donator_eiren2
 	name = "Donator Kit - Lunae - Required: Sabre"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eirensabre
+	path = /obj/item/enchantingkit/weapon/eirensabre
 	donatitem = TRUE
 
 /datum/loadout_item/donator_eiren3
 	name = "Donator Kit - Cinis - Required: Sabre"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eirensabre2
+	path = /obj/item/enchantingkit/weapon/eirensabre2
 	donatitem = TRUE
 
 /datum/loadout_item/donator_waff
 	name = "Donator Kit - Weeper Lathe - Required: Greatsword"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/waff
+	path = /obj/item/enchantingkit/weapon/waff
 	donatitem = TRUE
 
 /datum/loadout_item/donator_inverserun
 	name = "Donator Kit - Votive Thorns - Required: Any Zweihander"
-	path = /obj/item/enchantingkit/inverserun
+	path = /obj/item/enchantingkit/weapon/inverserun
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
@@ -1538,7 +1538,19 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donat_weaponkitrock
 	name = "Donator Kit - 'Rockhillian Longsword' - Required: Broadsword or Executioner Sword"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/triumph_weaponkit_rock
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_rock
+	donatitem = TRUE
+
+/datum/loadout_item/donat_weaponkitsword
+	name = "Donator Kit - 'Valorian Sword' - Required: Iron Arming Sword, an Iron Dueling Sword, or a Maciejowski"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_sword
+	donatitem = TRUE
+
+/datum/loadout_item/donat_weaponkitgreatval
+	name = "Donator Kit - 'Valorian Greatsword' - Required: Greatsword, a Claymore, or a Flamberge"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_greatval
 	donatitem = TRUE
 
 /datum/loadout_item/donat_weaponkitsabre
@@ -1563,6 +1575,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Donator Item - Western Estates Caparison"
 	path = /obj/item/caparison/ryan
 	category = list("Разное", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_drow_armorkit
+	name = "Donator Item - Drowcraft Armor - Required: Hardened Leather Armor Or Studded Leather Armor"
+	path = /obj/item/enchantingkit/triumph_armorkit_drow
+	category = list("Броня", "Донат")
 	donatitem = TRUE
 
 /datum/loadout_item/donator_ryan/psy_helm
@@ -1616,7 +1634,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_stinketh_shashka
 	name = "Donator Kit - Fencer's Shashka - Required: Szöréndnížine Sabre Or Aavnic Shashka"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/stinketh_shashka
+	path = /obj/item/enchantingkit/weapon/stinketh_shashka
 	donatitem = TRUE
 
 /datum/loadout_item/donator_stinketh_pike
@@ -1646,6 +1664,30 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_weaponkitaxealt
 	name = "Donator Kit - Doubleheaded Axe - Required: Iron Axe, Bronze Axe, Steel Axe, Battle Axe, Silver War Axe or a Psydonic War Axe."
 	path = /obj/item/enchantingkit/triumph_weaponkit_axedouble
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitwodao
+	name = "Donator Kit - Wodao - Required: Sabre"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_wodao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitdadao
+	name = "Donator Kit - Dadao - Required: Iron Hunting Sword, Iron Dueling Messer, Steel Messer, Steel Hunting Sword Or Falx"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_dadao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitgdadao
+	name = "Donator Kit - Greatdadao- Required: Kriegmesser or Rhomphaia"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_gdadao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitdakkenalloybsword
+	name = "Donator Kit - Avantyne-Threaded Sword - Required: Longsword"
+	path = /obj/item/enchantingkit/dakken_alloybsword
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
@@ -2015,6 +2057,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/cloak/twilight_desert
 	donatitem = TRUE
 
+/datum/loadout_item/donat/cloak_etrusco
+	name = "Этруский плащ"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/duelcape
+	donatitem = TRUE
+
 // Маски
 
 /datum/loadout_item/naledimask
@@ -2148,6 +2196,18 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Корона из цветов Эоры"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/flowercrown/rosa/resprite
+	donatitem = TRUE
+
+/datum/loadout_item/donat/etrusca_hat
+	name = "Этруская шляпа"
+	category = list("Головные уборы", "Донат")
+	path = /obj/item/clothing/head/roguetown/duelhat/etrusca
+	donatitem = TRUE
+
+/datum/loadout_item/donat/grenzberet
+	name = "Grenzelhoftian Beret"
+	category = list("Головные уборы", "Донат")
+	path = /obj/item/clothing/head/roguetown/grenzelhofthat/triumph
 	donatitem = TRUE
 
 /datum/loadout_item/tw_d_horns_donat

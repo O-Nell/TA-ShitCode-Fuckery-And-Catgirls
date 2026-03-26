@@ -643,9 +643,6 @@ GLOBAL_LIST_EMPTY(respawncounts)
 	GLOB.clients -= src
 	QDEL_NULL(tgui_panel)
 	QDEL_LIST_ASSOC_VAL(char_render_holders)
-	if(movingmob != null)
-		movingmob.client_mobs_in_contents -= mob
-		UNSETEMPTY(movingmob.client_mobs_in_contents)
 	Master.UpdateTickRate()
 	return ..()
 
@@ -957,7 +954,7 @@ GLOBAL_LIST_EMPTY(respawncounts)
 			qdel(query_get_notes)
 			return
 	qdel(query_get_notes)
-	create_message("note", key, system_ckey, message, null, null, 0, 0, null, 0, 0)
+	create_message("note", key, system_ckey, message, logged = FALSE, note_severity = "none")
 
 
 /client/proc/check_ip_intel()
