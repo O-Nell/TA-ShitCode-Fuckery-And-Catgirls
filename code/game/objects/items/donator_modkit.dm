@@ -470,6 +470,7 @@
 		/obj/item/rogueweapon/sword			= /obj/item/rogueweapon/sword/dakken_sword
 	)
 	result_item = null
+	icon_loadout = /obj/item/rogueweapon/sword/long/dakken_longsword
 
 //StinkethStonketh - Shashka & pike
 /obj/item/enchantingkit/weapon/stinketh_shashka
@@ -534,6 +535,7 @@
 		/obj/item/clothing/suit/roguetown/armor/leather/studded		= /obj/item/clothing/suit/roguetown/armor/leather/heavy/shadowvest
 	)
 	result_item = null
+	icon_loadout = /obj/item/clothing/suit/roguetown/armor/leather/heavy/shadowvest
 
 /obj/item/enchantingkit/triumph_weaponkit_axe
 	name = "'Valorian' axe morphing elixir"

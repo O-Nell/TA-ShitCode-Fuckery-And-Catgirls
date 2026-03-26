@@ -350,7 +350,7 @@ SUBSYSTEM_DEF(ticker)
 	for(var/mob/dead/new_player/player in GLOB.new_player_list)
 		if(player.ready == PLAYER_READY_TO_PLAY)
 			readied_count++
-	var/estimated_pop = round(readied_count * 1.1)
+//	var/estimated_pop = round(readied_count * 1.1)
 	gnollslot_update()
 //	update_scaling_slots(estimated_pop)
 

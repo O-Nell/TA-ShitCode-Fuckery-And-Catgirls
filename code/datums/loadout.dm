@@ -1541,6 +1541,18 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_rock
 	donatitem = TRUE
 
+/datum/loadout_item/donat_weaponkitsword
+	name = "Donator Kit - 'Valorian Sword' - Required: Iron Arming Sword, an Iron Dueling Sword, or a Maciejowski"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_sword
+	donatitem = TRUE
+
+/datum/loadout_item/donat_weaponkitgreatval
+	name = "Donator Kit - 'Valorian Greatsword' - Required: Greatsword, a Claymore, or a Flamberge"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_greatval
+	donatitem = TRUE
+
 /datum/loadout_item/donat_weaponkitsabre
 	name = "Donator Kit - 'Sabreguard Longsword' - Required: Longsword or Kriegmesser"
 	category = list("Оружие", "Донат")
@@ -1673,7 +1685,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
-/datum/loadout_item/donator_weaponkitgdadao
+/datum/loadout_item/donator_weaponkitdakkenalloybsword
 	name = "Donator Kit - Avantyne-Threaded Sword - Required: Longsword"
 	path = /obj/item/enchantingkit/dakken_alloybsword
 	category = list("Оружие", "Донат")
@@ -2190,6 +2202,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Этруская шляпа"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/duelhat/etrusca
+	donatitem = TRUE
+
+/datum/loadout_item/donat/grenzberet
+	name = "Grenzelhoftian Beret"
+	category = list("Головные уборы", "Донат")
+	path = /obj/item/clothing/head/roguetown/grenzelhofthat/triumph
 	donatitem = TRUE
 
 /datum/loadout_item/tw_d_horns_donat
