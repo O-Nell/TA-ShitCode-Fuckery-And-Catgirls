@@ -136,8 +136,6 @@ GLOBAL_LIST_EMPTY(chosen_names)
 
 	var/clientfps = 100//0 is sync
 
-	var/parallax
-
 	var/ambientocclusion = TRUE
 	var/auto_fit_viewport = FALSE
 	var/widescreenpref = TRUE
@@ -808,9 +806,9 @@ GLOBAL_LIST_EMPTY(chosen_names)
 					dat += "High"
 			dat += "</a><br>"
 */
-//			dat += "<b>Fit Viewport:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? "Auto" : "Manual"]</a><br>"
-//			if (CONFIG_GET(string/default_view) != CONFIG_GET(string/default_view_square))
-//				dat += "<b>Widescreen:</b> <a href='?_src_=prefs;preference=widescreenpref'>[widescreenpref ? "Enabled ([CONFIG_GET(string/default_view)])" : "Disabled ([CONFIG_GET(string/default_view_square)])"]</a><br>"
+			dat += "<b>Fit Viewport:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? "Auto" : "Manual"]</a><br>"
+			if (CONFIG_GET(string/default_view) != CONFIG_GET(string/default_view_square))
+				dat += "<b>Widescreen:</b> <a href='?_src_=prefs;preference=widescreenpref'>[widescreenpref ? "Enabled ([CONFIG_GET(string/default_view)])" : "Disabled ([CONFIG_GET(string/default_view_square)])"]</a><br>"
 
 /*			if (CONFIG_GET(flag/maprotation))
 				var/p_map = preferred_map
@@ -832,7 +830,6 @@ GLOBAL_LIST_EMPTY(chosen_names)
 */
 
 //			dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'>[(toggles & SOUND_LOBBY) ? "Enabled":"Disabled"]</a><br>"
-
 
 			dat += "</td><td width='400px' height='500px' valign='top'>"
 			dat += "<h2>Special Role Settings</h2>"
@@ -1061,7 +1058,7 @@ GLOBAL_LIST_EMPTY(chosen_names)
 		//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
 		var/datum/job/lastJob
 		for(var/datum/job/job in sortList(SSjob.occupations, GLOBAL_PROC_REF(cmp_job_display_asc)))
-			if(!job.spawn_positions)
+			if(!job.spawn_positions && !job.always_show_on_latechoices)
 				continue
 
 			index += 1
@@ -3029,16 +3026,6 @@ Slots: [job.spawn_positions] [job.round_contrib_points ? "RCP: +[job.round_contr
 
 				if("allow_midround_antag")
 					toggles ^= MIDROUND_ANTAG
-
-				if("parallaxup")
-					parallax = WRAP(parallax + 1, PARALLAX_INSANE, PARALLAX_DISABLE + 1)
-					if (parent && parent.mob && parent.mob.hud_used)
-						parent.mob.hud_used.update_parallax_pref(parent.mob)
-
-				if("parallaxdown")
-					parallax = WRAP(parallax - 1, PARALLAX_INSANE, PARALLAX_DISABLE + 1)
-					if (parent && parent.mob && parent.mob.hud_used)
-						parent.mob.hud_used.update_parallax_pref(parent.mob)
 
 				if("ambientocclusion")
 					ambientocclusion = !ambientocclusion

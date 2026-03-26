@@ -451,7 +451,7 @@
 		/obj/item/clothing/head/roguetown/helmet/heavy/psydonbarbute = /obj/item/clothing/head/roguetown/helmet/heavy/psydonhelm/ryan)
 	icon_loadout = /obj/item/clothing/head/roguetown/helmet/heavy/psydonhelm/ryan
 
-//Dakken12 - Armet/Hounskull
+//Dakken12 - Armet/Hounskull/Swords
 /obj/item/enchantingkit/dakken_zizhelm
 	name = "'armoured avantyne barbute' morphing elixir"
 	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Armet or Hounskull Bascinet"
@@ -462,6 +462,15 @@
 	)
 	result_item = null
 	icon_loadout = /obj/item/clothing/head/roguetown/helmet/heavy/knight/armet/dakken
+
+/obj/item/enchantingkit/dakken_alloybsword
+	name = "'avantyne-threaded sword' morphing elixir"
+	target_items = list(
+		/obj/item/rogueweapon/sword/long	= /obj/item/rogueweapon/sword/long/dakken_longsword,
+		/obj/item/rogueweapon/sword			= /obj/item/rogueweapon/sword/dakken_sword
+	)
+	result_item = null
+	icon_loadout = /obj/item/rogueweapon/sword/long/dakken_longsword
 
 //StinkethStonketh - Shashka & pike
 /obj/item/enchantingkit/weapon/stinketh_shashka
@@ -526,6 +535,7 @@
 		/obj/item/clothing/suit/roguetown/armor/leather/studded		= /obj/item/clothing/suit/roguetown/armor/leather/heavy/shadowvest
 	)
 	result_item = null
+	icon_loadout = /obj/item/clothing/suit/roguetown/armor/leather/heavy/shadowvest
 
 /obj/item/enchantingkit/triumph_weaponkit_axe
 	name = "'Valorian' axe morphing elixir"
