@@ -520,6 +520,15 @@
 	sellprice = 0	//Heresy of the highest order. Unless...
 	icon_state = "reformistcross"
 
+/obj/item/clothing/neck/roguetown/psicross/g
+	name = "golden psycross"
+	desc = "'Purity afloat, for paradise awaits!'"
+	icon_state = "psycross_g"
+	item_state = "psycross_g"
+	//dropshrink = 0.75
+	resistance_flags = FIRE_PROOF
+	sellprice = 100
+
 /obj/item/clothing/neck/roguetown/psicross/aalloy
 	name = "decrepit psycross"
 	desc = "'A comet capable of rending all the enemies of humanity apart; oh, how graceful His power was! And His sacrifice, ever so noble! Yet now He slumbers, unaware of the fruits His efforts came to give. And He sighs. And He weeps.'"
@@ -528,11 +537,26 @@
 	chunkcolor = "#532e25"
 	material_category = ARMOR_MAT_PLATE
 
+/obj/item/clothing/neck/roguetown/psicross/paalloy
+	name = "ancient psycross"
+	desc = "'A comet capable of rending all the enemies of humanity apart; oh, how graceful His power was! And His sacrifice, ever so noble! Yet now He slumbers, unaware of the fruits His efforts came to give. And He sighs. And He weeps.'"
+	icon_state = "psycross_a"
+	chunkcolor = "#532e25"
+	material_category = ARMOR_MAT_PLATE
+
 /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy
 	name = "decrepit zcross"
 	desc = "'Progress. Ascension. Destiny. A mandate, commanded by God, to be fufilled by Man. She called us forth from the edge of reality - and with Her dying breath, rasped out the final truth; the fire is gone, and the world will soon follow.'"
 	icon_state = "zcross_a"
 	color = "#bb9696"
+	chunkcolor = "#532e25"
+	material_category = ARMOR_MAT_PLATE
+	resistance_flags = FIRE_PROOF
+
+/obj/item/clothing/neck/roguetown/psicross/inhumen/paalloy
+	name = "ancient zcross"
+	desc = "'Progress. Ascension. Destiny. A mandate, commanded by God, to be fufilled by Man. She called us forth from the edge of reality - and with Her dying breath, rasped out the final truth; the fire is gone, and the world will soon follow.'"
+	icon_state = "zcross_a"
 	chunkcolor = "#532e25"
 	material_category = ARMOR_MAT_PLATE
 	resistance_flags = FIRE_PROOF
@@ -620,6 +644,28 @@
 	desc = "Within the Beyond, where dreams and daemons coalesce, lies the secret to all knowledge; both arcyne and aeternal. Under my ward, I shall guide thee forth to this pedestal."
 	icon_state = "noc"
 	sellprice = 50
+
+/obj/item/clothing/neck/roguetown/psicross/noc/bronze
+	name = "bronze amulet of Noc"
+	desc = "Knowledge predates lyfe and death itself. Who art thou, to assume the quill's works are no holier than a sword or masterwork?"
+	icon_state = "noc_b"
+
+/obj/item/clothing/neck/roguetown/psicross/noc/aalloy
+	name = "decrepit amulet of Noc"
+	desc = "The ultimate answer to the ultimate question is not a parable, but a pair of numbers; 'four' and 'two'. Thou may not understand it, yet, but I assure thee; it shall all make sense in due tyme."
+	icon_state = "noc_a"
+	color = "#bb9696"
+	chunkcolor = "#532e25"
+	material_category = ARMOR_MAT_PLATE
+	resistance_flags = FIRE_PROOF
+
+/obj/item/clothing/neck/roguetown/psicross/noc/paalloy
+	name = "ancient amulet of Noc"
+	desc = "The ultimate answer to the ultimate question is not a parable, but a pair of numbers; 'four' and 'two'. Thou may not understand it, yet, but I assure thee; it shall all make sense in due tyme."
+	icon_state = "noc_a"
+	chunkcolor = "#532e25"
+	material_category = ARMOR_MAT_PLATE
+	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/neck/roguetown/psicross/abyssor
 	name = "amulet of Abyssor"
@@ -759,15 +805,6 @@
 /obj/item/clothing/neck/roguetown/psicross/silver/get_mechanics_examine(mob/user)
     . = ..()
     . += span_info("Silver amulets protect against most unholy curses, hexes, and other mind-altering spells.")
-
-/obj/item/clothing/neck/roguetown/psicross/g
-	name = "golden psycross"
-	desc = "'Purity afloat, for paradise awaits!'"
-	icon_state = "psycross_g"
-	item_state = "psycross_g"
-	//dropshrink = 0.75
-	resistance_flags = FIRE_PROOF
-	sellprice = 100
 
 /obj/item/clothing/neck/roguetown/psicross/pearl //put it as a psycross so it can be used for miracles
 	name = "pearl amulet"

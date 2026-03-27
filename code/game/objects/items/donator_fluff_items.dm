@@ -25,6 +25,14 @@
 	mob_overlay_icon = 'icons/clothing/onmob/donor_clothes.dmi'
 	sleeved = 'icons/clothing/onmob/donor_sleeves_armor.dmi'
 
+/obj/item/clothing/head/roguetown/circlet/saffiratiara
+	name = "saffira encrusted tiara"
+	desc = "An ornate gold tiara, inset with a Saffira in its peak."
+	icon_state = "eekasqueak"
+	item_state = "eekasqueak"
+	icon = 'icons/clothing/donor_clothes.dmi'
+	mob_overlay_icon = 'icons/clothing/onmob/donor_clothes.dmi'
+
 //Funkymonke's donator item - dress
 /obj/item/clothing/suit/roguetown/shirt/dress/funkydress
 	name = "padded dress"
