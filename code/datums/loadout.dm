@@ -1691,6 +1691,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
+/datum/loadout_item/donator/eoranspike
+	name = "Donator Kit - Eoran Spike - Required: Steel Dagger"
+	path = /obj/item/enchantingkit/shudderfly_dagger
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
 // Разное
 /datum/loadout_item/donat
 	name = "Музыкальная коробка"
@@ -2113,7 +2119,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/brassbeak
-	name = "Donator Kit - Brass Beak Mask"
+	name = "Donator Kit - Brass Beak Mask - Required: Head Physician's Mask Or Plague Mask"
 	category = list ("Донат", "Головные уборы")
 	path = /obj/item/enchantingkit/lmwevil_brassbeak
 	donatitem = TRUE
