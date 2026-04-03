@@ -93,7 +93,7 @@
 		"+1 CON" = STATKEY_CON,
 		"+1 WIL" = STATKEY_WIL,
 		"+1 PER" = STATKEY_PER,
-		"No Hunger & Thirst" = TRAIT_NOHUNGER
+		"No Hunger & Thirst" = TRAIT_NOHUNGER,
 		"I do not wish to be possesed" = TRAIT_ZOMBIE_IMMUNE,
 		"I wish to be beautiful" = TRAIT_BEAUTIFUL_UNCANNY
 	)
