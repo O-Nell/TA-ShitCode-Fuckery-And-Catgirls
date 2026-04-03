@@ -2667,6 +2667,23 @@ GLOBAL_LIST_EMPTY(chosen_names)
 					if(new_mutantcolor)
 						features["mcolor3"] = sanitize_hexcolor(new_mutantcolor)
 						try_update_mutant_colors()
+				
+				if("race_title")
+					var/list/titles = pref_species.race_titles
+					var/list/choices = list("None", "Custom")
+					for(var/A in titles)
+						choices += list(A)
+					if(user?.client)
+						var/result = tgui_input_list(user, "What do they call your kind?", "RACE TITLE", choices)
+
+						if(result == "Custom")
+							result = tgui_input_text(user, "Name of your people:", "RACE TITLE", "None",  encode = FALSE)
+						if(result)
+							if(result == "None")
+								selected_title = "None"
+							else
+								selected_title = result
+					show_misc_pref_ui(user)
 
 /*
 				if("color_ethereal")
