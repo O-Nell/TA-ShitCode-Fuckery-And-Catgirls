@@ -10,6 +10,15 @@
 	base_name = "Humen"
 	desc = "The inevitable union between wildkin and some form of humanity or another. While they also experience animalistic tendencies akin to their full-blooded ancestors, their intermingling with others has stemmed the severity of such primordial impulses. (Half-kin are not a template race to play your own custom race. If you play a half-kin, you are expected to roleplay to the setting and the race's lore.)<br>\
 	<span style='color: #6a8cb7;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;'><b>+1 PER | +1 WIL </b></span><br>"
+
+	use_titles = TRUE
+	race_titles = list(
+	"Cat-Kin", "Dog-Kin", "Volf-Kin", "Lion-Kin", "Venard-Kin", "Tiger-Kin", "Sheep-Kin",
+	"Goat-Kin", "Rous-Kin", "Possum-Kin", "Pig-Kin", "Boar-Kin", "Rabbit-Kin", "Horse-Kin",
+	"Donkey-Kin", "Hyena-Kin", "Deer-Kin", "Bear-Kin", "Panda-Kin", "Coyote-Kin", "Moose-Kin",
+	"Jackal-Kin", "Panther-Kin", "Lynx-Kin", "Leopard-Kin", "Monkey-Kin", "Bird-Kin", "Seal-Kin", "Frog-Kin",
+	"Bat-Kin", "Otter-Kin", "Cow-Kin", "Bull-Kin", "Bee-Kin", "Lizard-Kin", "Insect-Kin", "Spider-Kin", "Monster-Kin", "Chimera", "Kitsune"
+	)
 	skin_tone_wording = "Ancestry"
 	default_color = "FFFFFF"
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,STUBBLE,OLDGREY,MUTCOLORS_PARTSONLY)
