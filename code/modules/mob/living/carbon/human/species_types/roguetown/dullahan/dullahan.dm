@@ -10,8 +10,17 @@
 	desc = "<b>Revenant</b><br>\
 	Revenants are those that have died, returning from death to continue 'living' in a manner to speak. Their origins are not entirely known, yet many strongly believe them to have originated from the rot and decay of Psydonia. \
 	Unable to truly rest, yet entirely sane of mind. Capable of detaching their heads through unknown arcyne means, they are oft wanderers due to their unknown origins and being ostracized by both the Church and many of the common masses around the lands."
-	// Stat balancing. Per-server decision. Preferably keep neutral until analysis post testmerges.
-	//race_bonus = list(STAT_INTELLIGENCE = 1, STAT_CONSTITUTION = 1)
+
+	use_titles = TRUE
+	race_titles = list(
+	"Cat-Kin", "Dog-Kin", "Volf-Kin", "Lion-Kin", "Venard-Kin", "Tiger-Kin", "Sheep-Kin",
+	"Goat-Kin", "Rous-Kin", "Possum-Kin", "Pig-Kin", "Boar-Kin", "Rabbit-Kin", "Horse-Kin",
+	"Donkey-Kin", "Hyena-Kin", "Deer-Kin", "Bear-Kin", "Panda-Kin", "Coyote-Kin", "Moose-Kin",
+	"Jackal-Kin", "Panther-Kin", "Lynx-Kin", "Leopard-Kin", "Monkey-Kin", "Bird-Kin", "Seal-Kin", "Frog-Kin",
+	"Bat-Kin", "Otter-Kin", "Cow-Kin", "Bull-Kin", "Bee-Kin", "Lizard-Kin", "Insect-Kin", "Spider-Kin", "Monster-Kin", "Chimera", "Kitsune"
+	)
+
+	race_bonus = list(STAT_INTELLIGENCE = 1, STAT_CONSTITUTION = 1)
 	skin_tone_wording = "Catalyst"
 	use_skin_tone_wording_for_examine = FALSE
 	max_age = "???"
