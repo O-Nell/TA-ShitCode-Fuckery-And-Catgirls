@@ -155,9 +155,9 @@
 		for(var/lang in picked_choices)
 			recipient.grant_language(extra_choices[lang])
 
-/datum/virtue/utility/hollow
-	name = "Hollow"
-	desc = "Some fell magick has rendered me inwardly unliving - I do not hunger, and I do not breathe."
+/datum/virtue/utility/deathless
+	name = "Deathless"
+	desc = "Some fell magick has rendered me inwardly unliving - I do not hunger, and I do not breathe. Yet, I still live"
 	added_traits = list(TRAIT_NOHUNGER, TRAIT_NOBREATH)
 
 /datum/virtue/utility/deadened
