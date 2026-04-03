@@ -10,8 +10,14 @@
 	desc = "<b>Revenant</b><br>\
 	Revenants are those that have died, returning from death to continue 'living' in a manner to speak. Their origins are not entirely known, yet many strongly believe them to have originated from the rot and decay of Psydonia. \
 	Unable to truly rest, yet entirely sane of mind. Capable of detaching their heads through unknown arcyne means, they are oft wanderers due to their unknown origins and being ostracized by both the Church and many of the common masses around the lands."
-	// Stat balancing. Per-server decision. Preferably keep neutral until analysis post testmerges.
-	race_bonus = list(STAT_INTELLIGENCE = 1, STAT_LUCK = -1) // a bit of tradeoff
+
+	use_titles = TRUE
+	race_titles = list(
+	"None", "Accursed Half-Kin", "Accursed Human", "Dullahan", 
+	"Revenant", "Otherwordly Monster", "Otherworldy Chimera", "Ascended Kitsune", "Undead Warrior"
+	)
+
+	race_bonus = list(STAT_INTELLIGENCE = 1, STAT_CONSTITUTION = 1)
 	skin_tone_wording = "Catalyst"
 	use_skin_tone_wording_for_examine = FALSE
 	max_age = "???"

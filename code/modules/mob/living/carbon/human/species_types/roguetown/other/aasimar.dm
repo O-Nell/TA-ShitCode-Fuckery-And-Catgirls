@@ -18,10 +18,15 @@
 	Due to their celestial nature, it is widely believed that an Aasimar's death is a bad omen...<br>\
 	(+1 FOR, +1 Stat of their choice, or Lack of Hunger & Thirst)"
 
+	use_titles = TRUE
+	race_titles = list(
+	"Angel", "Holy Knight", "Wanderer from Above"
+	)
+
 	max_age = "???"
 
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,STUBBLE,OLDGREY)
-	inherent_traits = list(TRAIT_NOMOBSWAP)
+	inherent_traits = list(TRAIT_NOMOBSWAP, TRAIT_SILVER_BLESSED) // my boy, you should be blessed with beauty
 	default_features = MANDATORY_FEATURE_LIST
 	use_skintones = TRUE
 	disliked_food = NONE
@@ -89,6 +94,8 @@
 		"+1 WIL" = STATKEY_WIL,
 		"+1 PER" = STATKEY_PER,
 		"No Hunger & Thirst" = TRAIT_NOHUNGER
+		"I do not wish to be possesed" = TRAIT_ZOMBIE_IMMUNE,
+		"I wish to be beautiful" = TRAIT_BEAUTIFUL_UNCANNY
 	)
 
 /datum/species/aasimar/on_species_gain(mob/living/carbon/C, datum/species/old_species)

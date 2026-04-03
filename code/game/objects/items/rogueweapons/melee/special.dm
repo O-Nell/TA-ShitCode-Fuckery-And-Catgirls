@@ -886,6 +886,7 @@
 	animname = "stab"
 	blade_class = BCLASS_STAB
 	hitsound = list('sound/combat/hits/bladed/genstab (1).ogg', 'sound/combat/hits/bladed/genstab (2).ogg', 'sound/combat/hits/bladed/genstab (3).ogg')
+	item_d_type = "stab"
 
 /datum/intent/claw/lunge/iron
 	damfactor = 1.2
@@ -1138,7 +1139,7 @@
 	force_wielded = 30
 	throwforce = 40 // It'll be funny. Trust.
 	possible_item_intents = list(SPEAR_BASH)
-	gripped_intents = list(/datum/intent/spear/thrust/ducal_standard, /datum/intent/spear/bash/ranged, /datum/intent/mace/smash/eaglebeak) // GET THEM OFF OF ME!!! OOOUGH!!!
+	gripped_intents = list(/datum/intent/spear/thrust, /datum/intent/spear/bash/ranged, /datum/intent/mace/smash/eaglebeak) // GET THEM OFF OF ME!!! OOOUGH!!!
 	icon = 'icons/roguetown/weapons/polearms64.dmi'
 	icon_state = "standard"
 	max_blade_int = 200
@@ -1225,6 +1226,3 @@
 /obj/item/rogueweapon/spear/keep_standard/Destroy()
 	GLOB.lordcolor -= src
 	return ..()
-
-/datum/intent/spear/thrust/ducal_standard
-	penfactor = PEN_MEDIUM
