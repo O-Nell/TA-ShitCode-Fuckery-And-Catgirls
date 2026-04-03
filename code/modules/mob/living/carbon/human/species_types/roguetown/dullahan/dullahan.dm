@@ -13,7 +13,8 @@
 
 	use_titles = TRUE
 	race_titles = list(
-	"None", "Accursed Half-Kin", "Accursed Human", "Dullahan', "Revenant", "Otherwordly Monster", "Otherworldy Chimera", "Ascended Kitsune", "Undead Warrior"
+	"None", "Accursed Half-Kin", "Accursed Human", "Dullahan', 
+	"Revenant", "Otherwordly Monster", "Otherworldy Chimera", "Ascended Kitsune", "Undead Warrior"
 	)
 
 	race_bonus = list(STAT_INTELLIGENCE = 1, STAT_CONSTITUTION = 1)
