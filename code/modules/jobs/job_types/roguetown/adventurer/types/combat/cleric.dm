@@ -115,7 +115,7 @@
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe/eora
 			mask = /obj/item/clothing/head/roguetown/eoramask
 		if (/datum/patron/divine/xylix)
-			cloak = /obj/item/clothing/cloak/templar/devotee/xylix
+			cloak = /obj/item/clothing/cloak/tabard/devotee/xylix
 		else
 			cloak = /obj/item/clothing/suit/roguetown/shirt/robe //placeholder, anyone who doesn't have cool patron drip sprites just gets generic robes
 			mask = /obj/item/clothing/head/roguetown/roguehood
