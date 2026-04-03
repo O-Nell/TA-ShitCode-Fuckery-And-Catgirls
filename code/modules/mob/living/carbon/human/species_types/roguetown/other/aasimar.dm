@@ -18,13 +18,7 @@
 	Due to their celestial nature, it is widely believed that an Aasimar's death is a bad omen...<br>\
 	(+1 FOR, +1 Stat of their choice, or Lack of Hunger & Thirst)"
 
-	use_titles = TRUE
-	race_titles = list(
-	"Angel", "Holy Knight", "Wanderer from Above"
-	)
-
 	max_age = "???"
-
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,STUBBLE,OLDGREY)
 	inherent_traits = list(TRAIT_NOMOBSWAP, TRAIT_SILVER_BLESSED) // my boy, you should be blessed with beauty
 	default_features = MANDATORY_FEATURE_LIST
