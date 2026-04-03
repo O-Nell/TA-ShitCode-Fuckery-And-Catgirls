@@ -21,7 +21,11 @@
 	max_age = "???"
 
 	species_traits = list(EYECOLOR,HAIR,FACEHAIR,LIPS,STUBBLE,OLDGREY)
-	inherent_traits = list(TRAIT_NOMOBSWAP)
+	inherent_traits = list(TRAIT_NOMOBSWAP, TRAIT_SILVER_BLESSED) // my boy, you should be blessed with beauty
+	custom_selection = list(
+        "I do not wish to be possesed" = TRAIT_ZOMBIE_IMMUNE,
+		"I wish to be beautiful" = TRAIT_BEAUTIFUL_UNCANNY //makes sense, tbh bc of description
+	)
 	default_features = MANDATORY_FEATURE_LIST
 	use_skintones = TRUE
 	disliked_food = NONE

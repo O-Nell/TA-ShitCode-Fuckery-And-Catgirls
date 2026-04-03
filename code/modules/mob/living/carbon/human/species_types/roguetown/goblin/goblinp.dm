@@ -69,6 +69,7 @@
 		OFFSET_NECK_F = list(0,-5), OFFSET_MOUTH_F = list(0,-5), OFFSET_PANTS_F = list(0,0), \
 		OFFSET_SHIRT_F = list(0,0), OFFSET_ARMOR_F = list(0,0), OFFSET_UNDIES_F = list(0,-4), \
 		)
+	inherent_traits = list(TRAIT_SEEPRICES_SHITTY, TRAIT_NASTY_EATER) // me see shinies! it have some worth!
 	race_bonus = list(STAT_SPEED = 1)
 	enflamed_icon = "widefire"
 	attack_verb = "slash"

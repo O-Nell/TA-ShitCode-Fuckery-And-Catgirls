@@ -43,6 +43,11 @@
 		OFFSET_NECK_F = list(0,-1), OFFSET_MOUTH_F = list(0,-1), OFFSET_PANTS_F = list(0,0), \
 		OFFSET_SHIRT_F = list(0,0), OFFSET_ARMOR_F = list(0,0), OFFSET_UNDIES_F = list(0,-1), \
 		)
+	inherent_traits = list(TRAIT_WILD_EATER)
+	custom_selection = list(
+        "I wish to hear better" = TRAIT_KEENEARS,
+        "I wish to track better" = TRAIT_SLEUTH
+	)
 	race_bonus = list(STAT_PERCEPTION = 1, STAT_INTELLIGENCE = 1)
 	enflamed_icon = "widefire"
 	organs = list(

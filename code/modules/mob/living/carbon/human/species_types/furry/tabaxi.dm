@@ -41,6 +41,11 @@
 		OFFSET_NECK_F = list(0,-1), OFFSET_MOUTH_F = list(0,-1), OFFSET_PANTS_F = list(0,0), \
 		OFFSET_SHIRT_F = list(0,0), OFFSET_ARMOR_F = list(0,0), OFFSET_UNDIES_F = list(0,-1)
 		)
+	inherent_traits = list(TRAIT_WILD_EATER) //i hate tabaxi, but that fits them well
+	custom_selection = list(
+        "I wish to hear better" = TRAIT_KEENEARS,
+        "I wish to be more sneaky" = TRAIT_LIGHT_STEP
+	)
 	race_bonus = list(STAT_SPEED = 1)
 	enflamed_icon = "widefire"
 	organs = list(

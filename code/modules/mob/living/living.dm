@@ -55,6 +55,16 @@
 			if(m_intent == MOVE_INTENT_RUN)
 				toggle_rogmove_intent(MOVE_INTENT_WALK)
 			return
+	//Far worse OldAcrobat. Woe. This is what you get for not just climbing.
+	if(HAS_TRAIT(src, TRAIT_WING_BOUND))
+		if(levels <= 2)
+			Immobilize(2 SECONDS)
+			OffBalance(12 SECONDS)
+			visible_message(span_danger("[src] glides from above."), \
+							span_danger("I glide down."))
+			if(m_intent == MOVE_INTENT_RUN)
+				toggle_rogmove_intent(MOVE_INTENT_WALK)
+			return
 	var/points
 	for(var/i in 2 to levels)
 		i++
