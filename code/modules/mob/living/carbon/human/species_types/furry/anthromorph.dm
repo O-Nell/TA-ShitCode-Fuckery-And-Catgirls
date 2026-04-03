@@ -12,15 +12,6 @@
 	akin to Noc's stolen knowledge that created lupians and other abstract experimentation or circumstance. \
 	(Wild-kin are not a template race to play your own custom race. If you play a wild-kin, you are expected to roleplay to the setting and the race's lore.)<br>\
 	<span style='color: #6a8cb7;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;'><b>+1 CON | +1 PER </b></span><br>"
-
-	use_titles = TRUE
-	race_titles = list(
-	"Cat-Kin", "Dog-Kin", "Volf-Kin", "Lion-Kin", "Venard-Kin", "Tiger-Kin", "Sheep-Kin",
-	"Goat-Kin", "Rous-Kin", "Possum-Kin", "Pig-Kin", "Boar-Kin", "Rabbit-Kin", "Horse-Kin",
-	"Donkey-Kin", "Hyena-Kin", "Deer-Kin", "Bear-Kin", "Panda-Kin", "Coyote-Kin", "Moose-Kin",
-	"Jackal-Kin", "Panther-Kin", "Lynx-Kin", "Leopard-Kin", "Monkey-Kin", "Bird-Kin", "Seal-Kin", "Frog-Kin",
-	"Bat-Kin", "Otter-Kin", "Cow-Kin", "Bull-Kin", "Bee-Kin", "Lizard-Kin", "Insect-Kin", "Spider-Kin", "Monster-Kin", "Chimera"
-	)
 	default_color = "444"
 	species_traits = list(
 		MUTCOLORS,
