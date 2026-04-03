@@ -89,14 +89,14 @@
 	. = ..()
 
 	AddComponent(/datum/component/arousal)
-	
+
 
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(clean_blood))
 	AddComponent(/datum/component/personal_crafting)
 	AddComponent(/datum/component/footstep, footstep_type, 1, 2)
 	GLOB.human_list += src
-	
-	
+	unarmed_special = new /datum/special_intent/upper_cut()
+
 	max_breath = 10
 	breath_remaining = 10
 	addtimer(CALLBACK(src, PROC_REF(update_breath_hud)), 1)
@@ -665,9 +665,6 @@
 				else if(energy > 0)
 					hud_used.energy.icon_state = "energy5"
 
-		if(hud_used.zone_select)
-			hud_used.zone_select.update_icon()
-
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE, break_restraints = FALSE)
 	dna?.species.spec_fully_heal(src)
 	if(admin_revive)
@@ -676,7 +673,9 @@
 	spill_embedded_objects()
 	set_heartattack(FALSE)
 	drunkenness = 0
-	return ..()
+	. = ..()
+	if(hud_used?.zone_select)
+		hud_used.zone_select.rebuild_limbs()
 
 /mob/living/carbon/human/check_weakness(obj/item/weapon, mob/living/attacker)
 	. = ..()
@@ -720,14 +719,22 @@
 		if(!client || !client.prefs)
 			return
 		if(alert(usr,"This will irreversibly purge an INDIVIDUAL PORTION of this slot. Is this what you want?","DON'T FATFINGER THIS","PURGE","Nevermind") == "PURGE")
-			if(alert(usr,"The next prompt will not have a Nevermind option. Are you sure you want this?","ITS NOT REVERSIBLE","Yes","Nevermind") == "Yes")
-				var/choice = alert(usr,"What would you like to purge?","ITS TOO LATE NOW","Flavor","Notes","Extra")
+			if(alert(usr,"The next prompt will not have a Nevermind option. Are you sure you want this?","IT'S NOT REVERSIBLE","Yes","Nevermind") == "Yes")
+				var/choice = alert(usr,"What would you like to purge?","IT'S TOO LATE NOW","Flavor","Notes","Extra")
 				if(choice)
 					switch(choice)
 						if("Flavor")
 							flavortext = null
 							nsfwflavortext = null
+							ooc_extra_img = null
+							ooc_extra_img_link = null
+							nsfw_ooc_extra_img = null
+							nsfw_ooc_extra_img_link = null
 							client.prefs?.flavortext = null
+							client.prefs?.ooc_extra_img = null
+							client.prefs?.ooc_extra_img_link = null
+							client.prefs?.nsfw_ooc_extra_img = null
+							client.prefs?.nsfw_ooc_extra_img_link = null
 						if("Notes")
 							ooc_notes = null
 							erpprefs = null
@@ -740,7 +747,9 @@
 							client.prefs?.song_title = null
 							client.prefs?.ooc_extra = null
 							img_gallery = list()
+							nsfw_img_gallery = list()
 							client.prefs?.img_gallery = list()
+							client.prefs?.nsfw_img_gallery = list()
 						else
 							return
 					client.prefs?.save_preferences()
@@ -755,21 +764,31 @@
 			if(alert(usr,"This cannot be undone. Are you sure?","DON'T FATFINGER THIS","Yes","No") == "Yes")
 				flavortext = null
 				nsfwflavortext = null
+				ooc_extra_img = null
+				ooc_extra_img_link = null
+				nsfw_ooc_extra_img = null
+				nsfw_ooc_extra_img_link = null
 				erpprefs = null
 				ooc_notes = null
 				ooc_extra = null
 				song_artist = null
 				song_title = null
 				img_gallery = list()
+				nsfw_img_gallery = list()
 				if(client)
 					client.prefs?.flavortext = null
 					client.prefs?.nsfwflavortext = null
+					client.prefs?.ooc_extra_img = null
+					client.prefs?.ooc_extra_img_link = null
+					client.prefs?.nsfw_ooc_extra_img = null
+					client.prefs?.nsfw_ooc_extra_img_link = null
 					client.prefs?.erpprefs = null
 					client.prefs?.ooc_notes = null
 					client.prefs?.ooc_extra = null
 					client.prefs?.song_artist = null
 					client.prefs?.song_title = null
 					client.prefs?.img_gallery = list()
+					client.prefs?.nsfw_img_gallery = list()
 					client.prefs?.save_preferences()
 					client.prefs?.save_character()
 					to_chat(usr, span_warn("Slot purged successfully."))

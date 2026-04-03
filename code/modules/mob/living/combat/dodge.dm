@@ -1,5 +1,4 @@
 /mob/living/proc/attempt_dodge(datum/intent/intenty, mob/living/user)
-	var/mob/living/H = src
 	if(pulledby || pulling)
 		return FALSE
 	if(world.time < last_dodge + dodgetime)
@@ -66,16 +65,7 @@
 				user.aftermiss()
 				return TRUE
 			else
-				if(HAS_TRAIT(src, TRAIT_MAGEARMOR))
-					if(H.magearmor == 0)
-						H.magearmor = 1
-						H.apply_status_effect(/datum/status_effect/buff/magearmor)
-						to_chat(src, span_boldwarning("My mage armor absorbs the hit and dissipates!"))
-						return TRUE
-					else
-						return FALSE
-				else
-					return FALSE
+				return FALSE
 	else
 		return FALSE
 
@@ -159,6 +149,9 @@
 			prob2defend += 20
 
 		if(HAS_TRAIT(U, TRAIT_GUIDANCE))
+			prob2defend -= 20
+
+		if(HAS_TRAIT(L, TRAIT_REVERSE_GUIDANCE))
 			prob2defend -= 20
 		
 		if(HAS_TRAIT(user, TRAIT_CURSE_RAVOX))
@@ -246,7 +239,8 @@
 			return FALSE
 	dodgecd = TRUE
 	playsound(src, 'sound/combat/dodge.ogg', 100, FALSE)
-	throw_at(turfy, 1, 2, src, FALSE)
+	if(!HAS_TRAIT(src, TRAIT_DODGE_NO_MOVE))
+		throw_at(turfy, 1, 2, src, FALSE)
 	if(drained > 0)
 		src.visible_message(span_warning("<b>[src]</b> dodges [user]'s attack!"))
 	else

@@ -917,7 +917,10 @@
 			if(admin_revive)
 				mind.remove_antag_datum(/datum/antagonist/zombie)
 			for(var/obj/effect/proc_holder/spell/spell as anything in mind.spell_list)
-				spell.updateButtonIcon()
+				spell.action?.build_all_button_icons()
+			// Reapply arcyne momentum if this mind had it before death
+			if(mind.has_arcyne_momentum && !has_status_effect(/datum/status_effect/buff/arcyne_momentum))
+				apply_status_effect(/datum/status_effect/buff/arcyne_momentum)
 		qdel(GetComponent(/datum/component/rot))
 
 /mob/living/proc/remove_CC(should_update_mobility = TRUE)
@@ -1128,6 +1131,13 @@
 	if(atkswinging)
 		stop_attack(FALSE)
 
+	// Deselect any active spell on resist
+	if(ranged_ability)
+		ranged_ability.deactivate(src)
+	var/datum/action/cooldown/active_cooldown = click_intercept
+	if(istype(active_cooldown))
+		active_cooldown.unset_click_ability(src, refund_cooldown = TRUE)
+
 	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
 	//resisting grabs (as if it helps anyone...)
 	if(pulledby)
@@ -1276,8 +1286,9 @@
 		if(!HAS_TRAIT(src, TRAIT_GARROTED))
 			combat_modifier -= 0.3
 		else
+			combat_modifier -= 0.15 // garrote is always harder to escape than a regular grab
 			if(!src.mind)
-				combat_modifier -= 0.3
+				combat_modifier -= 0.3 // mindless victims are even less capable of escaping
 			if(HAS_TRAIT(L, TRAIT_BLACKBAGGER))
 				combat_modifier -= 0.3
 				if(HAS_TRAIT(src, TRAIT_BAGGED))
@@ -2368,15 +2379,20 @@
 	offered_item_ref = WEAKREF(offered_item)
 
 	var/stealthy = (m_intent == MOVE_INTENT_SNEAK)
-	var/obj/item/reagent_containers/glass/offered_item_other = null
+	var/obj/item/reagent_containers/glass/offered_glass_other = null
+	var/obj/item/clothing/ring/band/offered_band_other = null
+	var/mob/living/carbon/human/self = src
+	var/mob/living/carbon/human/other = offered_to
 	if(istype(offered_item, /obj/item/reagent_containers/glass) && offered_item?.reagents?.maximum_volume > 0) // we have a drink in our hand
-		offered_item_other = offered_to.offered_item_ref?.resolve()
+		offered_glass_other = offered_to.offered_item_ref?.resolve()
+	if(istype(offered_item, /obj/item/clothing/ring/band)) // love wins
+		offered_band_other = offered_to.offered_item_ref?.resolve()
 
 	if(stealthy)
 		to_chat(src, span_notice("I secretly offer [offered_item] to [offered_to]."))
 		to_chat(offered_to, span_notice("[offered_to] secretly offers [offered_item] to me..."))
-	else if(!isnull(offered_item_other) && istype(offered_item_other) && offered_item_other?.reagents?.maximum_volume > 0) // Credit to tmyqlfpir; allows for the clinking of everything up to blacksteel tankards.
-		playsound(src,offered_item_other.reagents.maximum_volume > 50 ? 'sound/misc/clink_drink_big.ogg' : 'sound/misc/clink_drink.ogg', 100, TRUE) //Adds a new sound if the clinked container is above 50 drams in size.
+	else if(!isnull(offered_glass_other) && istype(offered_glass_other) && offered_glass_other?.reagents?.maximum_volume > 0) // Credit to tmyqlfpir; allows for the clinking of everything up to blacksteel tankards.
+		playsound(src,offered_glass_other.reagents.maximum_volume > 50 ? 'sound/misc/clink_drink_big.ogg' : 'sound/misc/clink_drink.ogg', 100, TRUE) //Adds a new sound if the clinked container is above 50 drams in size.
 		addtimer(CALLBACK(src, PROC_REF(stop_offering_item)), 0.6 SECONDS)
 		addtimer(CALLBACK(offered_to, PROC_REF(stop_offering_item)), 0.6 SECONDS)
 		visible_message(
@@ -2386,6 +2402,13 @@
 			ignored_mobs = list(offered_to)
 		)
 		to_chat(offered_to, span_notice("[src] clinks [offered_item] with me!"))
+	else if(!isnull(offered_band_other) && istype(offered_band_other) && ishuman(src) && ishuman(offered_to) && !self.marriedto && !other.marriedto)
+		addtimer(CALLBACK(src, PROC_REF(stop_offering_item)), 0.6 SECONDS)
+		addtimer(CALLBACK(offered_to, PROC_REF(stop_offering_item)), 0.6 SECONDS)
+		self.marriedto = other.real_name
+		other.marriedto = self.real_name
+		to_chat(self, span_notice("[other] is my beloved spouse! Time passes, but our love endures."))
+		to_chat(other, span_notice("[self] is my beloved spouse! Time passes, but our love endures."))
 	else
 		visible_message(
 			span_notice("[src] offers [offered_item] to [offered_to] with an outstretched hand."), \

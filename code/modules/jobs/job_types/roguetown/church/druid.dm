@@ -89,7 +89,8 @@
 	backpack_contents = list(/obj/item/ritechalk, /obj/item/storage/keyring/acolyte)
 	H.ambushable = FALSE
 	H.AddComponent(/datum/component/wise_tree_alert)
-	H.AddSpell(new /obj/effect/proc_holder/spell/self/conjure_armor/vines)
+	H.AddSpell(new /obj/effect/proc_holder/spell/targeted/create_seed)
+//	H.AddSpell(new /obj/effect/proc_holder/spell/self/conjure_armor/vines)
 	H.AddSpell(new /obj/effect/proc_holder/spell/self/beast_claws)
 	H.AddSpell(new /obj/effect/proc_holder/spell/self/beast_rage)
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)

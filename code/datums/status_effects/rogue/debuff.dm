@@ -134,6 +134,18 @@
 	duration = -1
 	needs_processing = FALSE
 
+/datum/status_effect/debuff/bleeding/on_apply() //mistwalker shitcode, scaling buff as they bleed out
+	if (!HAS_TRAIT(owner, TRAIT_JOURNEYS_END))
+		return ..()
+	owner.apply_status_effect(/datum/status_effect/buff/journey_ending)
+	return ..()
+
+/datum/status_effect/debuff/bleeding/on_remove()
+	if (!HAS_TRAIT(owner, TRAIT_JOURNEYS_END))
+		return ..()
+	owner.remove_status_effect(/datum/status_effect/buff/journey_ending)
+	return ..()
+
 /atom/movable/screen/alert/status_effect/debuff/bleedingt1
 	name = "Dizzy"
 	desc = ""
@@ -146,6 +158,18 @@
 	duration = -1
 	needs_processing = FALSE
 
+/datum/status_effect/debuff/bleedingworse/on_apply()
+	if (!HAS_TRAIT(owner, TRAIT_JOURNEYS_END))
+		return ..()
+	owner.apply_status_effect(/datum/status_effect/buff/journey_end)
+	return ..()
+
+/datum/status_effect/debuff/bleedingworse/on_remove()
+	if (!HAS_TRAIT(owner, TRAIT_JOURNEYS_END))
+		return ..()
+	owner.remove_status_effect(/datum/status_effect/buff/journey_end)
+	return ..()
+
 /atom/movable/screen/alert/status_effect/debuff/bleedingt2
 	name = "Faint"
 	desc = ""
@@ -157,6 +181,18 @@
 	effectedstats = list(STATKEY_STR = -3, STATKEY_SPD = -4)
 	duration = -1
 	needs_processing = FALSE
+
+/datum/status_effect/debuff/bleedingworst/on_apply()
+	if (!HAS_TRAIT(owner, TRAIT_JOURNEYS_END))
+		return ..()
+	owner.apply_status_effect(/datum/status_effect/buff/journey_end_final)
+	return ..()
+
+/datum/status_effect/debuff/bleedingworst/on_remove()
+	if (!HAS_TRAIT(owner, TRAIT_JOURNEYS_END))
+		return ..()
+	owner.remove_status_effect(/datum/status_effect/buff/journey_end_final)
+	return ..()
 
 /atom/movable/screen/alert/status_effect/debuff/bleedingt3
 	name = "Drained"
@@ -177,7 +213,11 @@
 	id = "net"
 	alert_type = /atom/movable/screen/alert/status_effect/debuff/netted
 	effectedstats = list(STATKEY_SPD = -5, STATKEY_WIL = -2)
-	duration = 3 MINUTES
+ 
+/datum/status_effect/debuff/netted/on_creation(mob/living/new_owner, newdur)
+	if(newdur)
+		duration = newdur
+	. = ..()
 
 /datum/status_effect/debuff/netted/on_apply()
 		. = ..()
@@ -424,6 +464,10 @@
 /datum/status_effect/debuff/dazed/shield
 	effectedstats = list(STATKEY_PER = -3, STATKEY_LCK = -1)
 	duration = 8 SECONDS
+
+/datum/status_effect/debuff/dazed/skullshatter
+	effectedstats = list(STATKEY_PER = -1, STATKEY_INT = -1, STATKEY_SPD = -1)
+	duration = -1
 
 /atom/movable/screen/alert/status_effect/debuff/dazed
 	name = "Dazed"

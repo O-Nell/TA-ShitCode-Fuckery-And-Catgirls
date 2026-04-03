@@ -104,7 +104,6 @@
 	shoes = /obj/item/clothing/shoes/roguetown/boots/nobleboot
 	saiga_shoes = /obj/item/clothing/shoes/roguetown/horseshoes/gold
 	belt = /obj/item/storage/belt/rogue/leather
-	l_hand = /obj/item/rogueweapon/sword/sabre
 	beltl = /obj/item/rogueweapon/scabbard/sword/royal
 	beltr = /obj/item/storage/keyring/heir
 	neck = /obj/item/storage/belt/rogue/pouch/coins/rich
@@ -112,11 +111,27 @@
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_RICH, H, "Savings.")
 
+/datum/outfit/job/roguetown/heir/daring/choose_loadout(mob/living/carbon/human/H)
+	. = ..()
+	var/weapons = list( // All decorated/gilded weapons, rich pompous ass that you are.
+	"Sabre",
+	"Rapier",
+	"Arming Sword"
+	)
+	var/weapon_choice = input(H, "Choose your weapon.", "ARMS TO INVITE ENVY") as anything in weapons
+	switch(weapon_choice)
+		if("Sabre")
+			H.put_in_hands(new /obj/item/rogueweapon/sword/sabre/dec)
+		if("Rapier")
+			H.put_in_hands(new /obj/item/rogueweapon/sword/rapier/dec)
+		if("Arming Sword")
+			H.put_in_hands(new /obj/item/rogueweapon/sword/decorated)
+
 /datum/advclass/heir/bookworm
 	name = "Introverted Bookworm"
 	tutorial = "Despite your standing, sociability is not your strong suit, and you have kept mostly to yourself and your books. This hardly makes you a favourite among the lords and ladies of the court, and an exit from your room is often met with amusement from nobility and servants alike. But maybe... just maybe, some of your reading interests may be bearing fruit."
 	outfit = /datum/outfit/job/roguetown/heir/bookworm
-	traits_applied = list(TRAIT_ARCYNE_T2, TRAIT_MAGEARMOR)
+	traits_applied = list(TRAIT_ARCYNE)
 	category_tags = list(CTAG_HEIR)
 	subclass_stats = list(
 		STATKEY_STR = -1,
@@ -125,7 +140,7 @@
 		STATKEY_CON = -1,
 		STATKEY_LCK = 1,
 	)
-	subclass_spellpoints = 14
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = 0, "minor" = 2, "utilities" = 4, "ward" = TRUE)
 	subclass_skills = list(
 		/datum/skill/misc/reading = SKILL_LEVEL_MASTER,
 		/datum/skill/magic/arcane = SKILL_LEVEL_NOVICE,
@@ -153,6 +168,12 @@
 	neck = /obj/item/storage/belt/rogue/pouch/coins/rich
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_RICH, H, "Savings.")
+		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/heir_spell_bundle)
+	backpack_contents = list(
+		/obj/item/handmirror = 1,
+		/obj/item/book/spellbook = 1,
+	)
+		
 
  
 /datum/advclass/heir/aristocrat
@@ -203,6 +224,9 @@
 		shirt = /obj/item/clothing/suit/roguetown/shirt/dress/royal/princess
 		shoes = /obj/item/clothing/shoes/roguetown/shortboots
 	saiga_shoes = /obj/item/clothing/shoes/roguetown/horseshoes/gold
+	backpack_contents = list(
+		/obj/item/storage/belt/rogue/pouch/coins/rich = 1
+	)
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_RICH, H, "Savings.")
 
@@ -219,7 +243,7 @@
 		STATKEY_INT = -2,
 		STATKEY_CON = -2,
 		STATKEY_WIL = -2,
-		STATKEY_LCK = -2
+		STATKEY_LCK = 5
 	)
 	subclass_skills = list(
 		/datum/skill/misc/swimming = SKILL_LEVEL_APPRENTICE,

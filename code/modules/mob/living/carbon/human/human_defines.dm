@@ -117,12 +117,16 @@
 	var/pose_text = ""
 	var/ooc_notes = null
 	var/ooc_extra
+	var/ooc_extra_img
+	var/ooc_extra_img_link
 	var/rumour = null
 	var/noble_gossip = null
 	var/song_title
 	var/song_artist
 	var/received_resident_key = FALSE
 	var/nsfwflavortext = null
+	var/nsfw_ooc_extra_img
+	var/nsfw_ooc_extra_img_link
 	var/erpprefs = null
 
 	// Cached version
@@ -134,9 +138,10 @@
 	/// Per-character theme override for examine panel viewers
 	var/examine_theme
 	var/list/img_gallery = list()
+
+	var/list/nsfw_img_gallery = list()
 	
 
-	var/nsfw_headshot_link = null //TA edit
 
 	var/has_confessed = FALSE // Used to track if they have confessed it was written onto a confession paper
 
@@ -194,6 +199,7 @@
 	COOLDOWN_DECLARE(priest_excommunicate)
 	COOLDOWN_DECLARE(priest_curse)
 	COOLDOWN_DECLARE(priest_change_miracles)
+	COOLDOWN_DECLARE(hag_transform_lockout)
 
 	// bait stacks for aimed intent
 	var/bait_stacks

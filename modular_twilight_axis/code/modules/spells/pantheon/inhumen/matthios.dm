@@ -458,8 +458,6 @@
 	/datum/status_effect/buff/refocus,
 	/datum/status_effect/buff/healing,
 	/datum/status_effect/buff/psyhealing,
-	/datum/status_effect/buff/convergence,
-	/datum/status_effect/buff/stasis,
 	/datum/status_effect/buff/order/movemovemove,
 	/datum/status_effect/buff/order/takeaim,
 	/datum/status_effect/buff/order/hold,
@@ -664,7 +662,7 @@
 	force = 0
 	force_wielded = 0
 	wdefense = 1
-	possible_item_intents = list(/datum/intent/spear/thrust/ducal_standard)
+	possible_item_intents = list(/datum/intent/spear/thrust)
 	icon = 'modular_twilight_axis/icons/roguetown/weapons/64.dmi'
 	icon_state = "matthios_standard"
 	resistance_flags = FIRE_PROOF
@@ -830,8 +828,8 @@
 		STAINT = 15
 
 		AddSpell(new /obj/effect/proc_holder/spell/self/twilight_dragonclaws)
-		AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/fireball/greater)
-		AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/spitfire)
+		mind.AddSpell(new /datum/action/cooldown/spell/projectile/spitfire)
+		mind.AddSpell(/datum/action/cooldown/spell/projectile/fireball)
 		AddSpell(new /obj/effect/proc_holder/spell/targeted/woundlick)
 		src.apply_status_effect(/datum/status_effect/buff/twilight_dragon_form)
 
@@ -859,7 +857,6 @@
 		TRAIT_NOFALLDAMAGE1,
 	)
 	inherent_biotypes = MOB_HUMANOID
-	armor = 5
 	no_equip = list(SLOT_SHIRT, SLOT_HEAD, SLOT_WEAR_MASK, SLOT_ARMOR, SLOT_GLOVES, SLOT_SHOES, SLOT_PANTS, SLOT_CLOAK, SLOT_BELT, SLOT_BACK_R, SLOT_BACK_L, SLOT_S_STORE, SLOT_RING, SLOT_NECK)
 	nojumpsuit = 1
 	sexes = 1
@@ -907,7 +904,6 @@
 	body_parts_covered = FULL_BODY
 	body_parts_inherent = FULL_BODY
 	armor = ARMOR_PLATE
-	prevent_crits = PREVENT_CRITS_ALL
 	blocksound = SOFTHIT
 	blade_dulling = DULLING_BASHCHOP
 	sewrepair = FALSE
@@ -926,7 +922,7 @@
 	attack_verb = list("claws", "mauls", "eviscerates")
 	animname = "cut"
 	hitsound = "genslash"
-	penfactor = 60
+	penfactor = PEN_MEDIUM
 	reach = 2
 	candodge = TRUE
 	canparry = TRUE
@@ -941,7 +937,7 @@
 	attack_verb = list("claws", "mauls", "eviscerates")
 	animname = "chop"
 	hitsound = "genslash"
-	penfactor = 60
+	penfactor = PEN_HEAVY
 	candodge = TRUE
 	canparry = TRUE
 	miss_text = "slashes the air!"
@@ -955,7 +951,7 @@
 	icon_state = "insmash"
 	maxrange = 5
 	chargetime = 1
-	penfactor = 30
+	penfactor = PEN_LIGHT
 
 /datum/intent/mace/strike/twilight_dragon_strike
 	name = "armor rending strike"

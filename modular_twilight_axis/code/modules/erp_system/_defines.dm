@@ -10,11 +10,6 @@
 
 #define REL_LOVE_POTION (1<<0)
 
-#define SEX_POSE_BOTH_STANDING "both_standing"
-#define SEX_POSE_USER_LYING    "user_lying"
-#define SEX_POSE_TARGET_LYING  "target_lying"
-#define SEX_POSE_BOTH_LYING    "both_lying"
-
 #define SEX_SENSITIVITY_MAX 2
 #define SEX_PAIN_MAX 2
 
@@ -73,6 +68,15 @@ var/global/list/ERP_ACTION_EDITOR_FIELDS = list(
 	list("id"="message_climax_passive", "label"="Оргазм: цель",        "type"="multiline", "section"="Сообщения"),
 )
 
+GLOBAL_LIST_INIT(erp_race_body_zone_bonus, list(
+	/datum/species/elf = list(
+		BODY_ZONE_PRECISE_EARS = list(
+			"passive_arousal_add" = 0.6,
+			"passive_pain_add" = 0.0
+		)
+	)
+))
+
 #define COMSIG_ERP_GET_LINKS "erp_get_links"
 #define COMSIG_ERP_ANATOMY_CHANGED "erp_anatomy_changed"
 #define COMSIG_SEX_MODIFY_EFFECT "sex_modify_effect"
@@ -112,7 +116,7 @@ var/global/list/ERP_ACTION_EDITOR_FIELDS = list(
 #define ERP_BAOTHA_CHARGE_REGEN_MULT 1.25
 
 GLOBAL_LIST_INIT(available_kinks, generate_kink_list())
-GLOBAL_LIST_INIT(relationship_settings, list(REL_LOVE_POTION = list("sex_mult" = 0.8,"other_sex_mult" = 1.2,"observe_min" = 10,"observe_gain" = 1,"observe_cap" = 30)))
+GLOBAL_LIST_INIT(relationship_settings, list("love_potion_settings" = list("sex_mult" = 0.8,"other_sex_mult" = 1.2,"observe_min" = 10,"observe_gain" = 1,"observe_cap" = 30,"flag" = REL_LOVE_POTION)))
 
 var/global/list/ERP_ORGAN_ORDER = list(SEX_ORGAN_BODY,SEX_ORGAN_MOUTH,SEX_ORGAN_BREASTS,SEX_ORGAN_HANDS,SEX_ORGAN_PENIS,SEX_ORGAN_VAGINA,SEX_ORGAN_ANUS,SEX_ORGAN_TAIL,SEX_ORGAN_LEGS)
 

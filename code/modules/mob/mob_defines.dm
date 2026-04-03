@@ -120,6 +120,7 @@
 	var/list/possible_offhand_intents = list()//Living
 	var/list/possible_rmb_intents = list()
 	var/list/base_intents = list() //bare hand intents
+	var/datum/special_intent/unarmed_special //fallback special intent when no weapon is held
 	var/l_index = 1
 	var/r_index = 1
 	var/r_ua_index = 1
@@ -275,7 +276,6 @@
 
 	var/setparrytime = 12
 	var/dodgetime = 12
-	var/magearmor = 0
 
 	var/last_dodge = 0
 	var/last_parry = 0
