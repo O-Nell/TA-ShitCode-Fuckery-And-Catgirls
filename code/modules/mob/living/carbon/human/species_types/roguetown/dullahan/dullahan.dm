@@ -13,7 +13,7 @@
 
 	use_titles = TRUE
 	race_titles = list(
-	"None", "Accursed Half-Kin", "Accursed Human", "Dullahan', 
+	"None", "Accursed Half-Kin", "Accursed Human", "Dullahan", 
 	"Revenant", "Otherwordly Monster", "Otherworldy Chimera", "Ascended Kitsune", "Undead Warrior"
 	)
 
